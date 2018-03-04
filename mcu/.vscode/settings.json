@@ -1,0 +1,13 @@
+{
+    "terminal.integrated.env.osx": {
+        "PATH": "/Users/tanner/.platformio/penv/bin:/Users/tanner/.platformio/penv:/Users/tanner/.virtualenvs/rover_serial/bin:/Users/tanner/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/bin:/Users/tanner/dev/go/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin",
+        "PLATFORMIO_CALLER": "vscode"
+    },
+    "files.associations": {
+        "functional": "cpp",
+        "type_traits": "cpp",
+        "thread": "cpp",
+        "array": "cpp",
+        "random": "cpp"
+    }
+}
