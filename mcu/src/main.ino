@@ -2,12 +2,10 @@
 
 #define SERVO_COUNT 4
 
-// instantiate four servos
+// instantiate servos
 Servo servos[SERVO_COUNT];
 // output pins
 const byte pins[SERVO_COUNT] = {12, 13, 14, 15};
-// store current servo values
-byte servoVals[SERVO_COUNT] = {0, 0, 0, 0};
 
 struct servoData
 {
@@ -19,50 +17,53 @@ void setup()
 {
   Serial.begin(9600);
   attachServos();
+  initServos();
 }
 
 void loop()
 {
   if (Serial.available() > 0)
   {
-    // process new data and respond with success or failure
-    Serial.write(readNewData() ? 1 : 0);
+    int result = processData();
+    // 1 is success, 0 is failure
+    // this could be expanded to more codes / data
+    Serial.write(result);
   }
 
-  writeToServos();
   delay(10);
 }
 
 // reads in new serial data for one servo
 // returns whether setting this new data was successful or not
-bool readNewData()
+bool processData()
 {
-  // this is a bit arbitrary, but may protect against some junk
-  // two bytes should be all that's needed
-  byte buf[20];
+  byte buf[3] = {0, 0, 0};
 
-  if (Serial.readBytesUntil(',', buf, 2) == 2)
+  // must be three so that the delimiter is read in
+  // and isn't left over in the buffer
+  if (Serial.readBytesUntil(',', buf, 3))
   {
     // element 0 is the servo id, element 1 is the servo value
     servoData data = {buf[0], buf[1]};
-
-    return setServoData(data);
+    return writeData(&data);
   }
+
+  return false;
 }
 
-// does sanity checking and sets servo's new value
-bool setServoData(servoData data)
+// does sanity checking and sets servo's new value if tests pass
+bool writeData(servoData *data)
 {
   // the id can't be less than 1 or greater than number of servos
-  if (data.id < 1 || data.id > SERVO_COUNT)
+  if (data->id < 1 || data->id > SERVO_COUNT)
     return false;
 
   // it's not valid to send higher than 180 to a servo
-  if (data.val > 180)
+  if (data->val > 180)
     return false;
 
-  // set the new value
-  servoVals[data.id - 1] = data.val;
+  // write the new value
+  servos[data->id - 1].write(data->val);
   return true;
 }
 
@@ -75,11 +76,11 @@ void attachServos()
   }
 }
 
-// writes the current value to the servo
-void writeToServos()
+// sets all servos to middle position (90)
+void initServos()
 {
   for (int x = 0; x < SERVO_COUNT; x++)
   {
-    servos[x].write(servoVals[x]);
+    servos[x].write(90);
   }
 }
