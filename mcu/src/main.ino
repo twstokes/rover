@@ -1,3 +1,13 @@
+/*
+  Input: Three bytes via serial.
+    Byte 1: ID (1-SERVO_COUNT)
+    Byte 2: Byte 0-255 (only 0-180 is acceptable)
+    Byte 3: Comma character (delimter)
+  
+
+  Output: 1 for success, 0 for failure
+    Failure conditions: ID out of range (0 or > SERVO_COUNT), integer higher than 180
+*/
 #include <Servo.h>
 
 #define SERVO_COUNT 4
@@ -15,7 +25,8 @@ struct servoData
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.setTimeout(100);
+  Serial.begin(115200);
   attachServos();
   initServos();
 }
