@@ -1,24 +1,36 @@
 import serial
+import time
 
-ser = serial.Serial('/dev/tty.SLAB_USBtoUART')  # open serial port
+ser = serial.Serial('/dev/cu.usbmodem1431', baudrate=115200, timeout=100)  # open serial port
 
-servo = input("ID: ")
-val = input("Value: ")
+# ser = serial.Serial('/dev/cu.usbmodem1431')  # open serial port
+time.sleep(2)
 
-payload = [int(servo), int(val)]
-#payload = [1, 50]
+val = 0
 
-for byte in payload:
-    ser.write(byte.to_bytes(1, 'little'))
+while val < 180:
+    # servo = input("ID: ")
+    # val = input("Value: ")
 
-ser.write(','.encode(encoding='ascii'))
+    # payload = [int(servo), int(val)]
+    payload = [1, val]
 
-success = ord(ser.read())
+    for byte in payload:
+        ser.write(byte.to_bytes(1, 'little'))
 
-if success == 1:
-    print("Success")
-else:
-    print("Failure")
+    # terminator
+    ser.write(','.encode(encoding='ascii'))
+
+    success = ord(ser.read())
+
+    if success == 1:
+        # print("Success")
+        pass
+    else:
+        print("Failure")
+        print(val)
+    
+    val += 1
 
 # while True:
     # print(ser.readline())
