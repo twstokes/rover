@@ -15,12 +15,20 @@
 // instantiate servos
 Servo servos[SERVO_COUNT];
 // output pins
-const byte pins[SERVO_COUNT] = {12, 13, 14, 15};
+const byte pins[SERVO_COUNT] = {5, 6, 10, 11};
 
 struct servoData
 {
   byte id;
   byte val;
+};
+
+enum processCode
+{
+  success, // data read in was valid and written to the servo
+  readFailure, // couldn't read data coming in
+  badId, // a bad id was referenced
+  badVal // a bad value was passed in
 };
 
 void setup()
@@ -35,9 +43,7 @@ void loop()
 {
   if (Serial.available() > 0)
   {
-    int result = processData();
-    // 1 is success, 0 is failure
-    // this could be expanded to more codes / data
+    processCode result = processData();
     Serial.write(result);
   }
 
@@ -46,7 +52,7 @@ void loop()
 
 // reads in new serial data for one servo
 // returns whether setting this new data was successful or not
-bool processData()
+processCode processData()
 {
   byte buf[3] = {0, 0, 0};
 
@@ -59,23 +65,23 @@ bool processData()
     return writeData(&data);
   }
 
-  return false;
+  return readFailure;
 }
 
 // does sanity checking and sets servo's new value if tests pass
-bool writeData(servoData *data)
+processCode writeData(servoData *data)
 {
   // the id can't be less than 1 or greater than number of servos
   if (data->id < 1 || data->id > SERVO_COUNT)
-    return false;
+    return badId;
 
   // it's not valid to send higher than 180 to a servo
   if (data->val > 180)
-    return false;
+    return badVal;
 
   // write the new value
   servos[data->id - 1].write(data->val);
-  return true;
+  return success;
 }
 
 // assign pins to servos
