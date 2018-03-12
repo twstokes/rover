@@ -1,13 +1,12 @@
 /*
   Input: Three bytes via serial.
-    Byte 1: ID (1-SERVO_COUNT)
-    Byte 2: Byte 0-255 (only 0-180 is acceptable)
-    Byte 3: Comma character (delimter)
+    Byte 1: 255
+    Byte 2: ID (1-SERVO_COUNT)
+    Byte 3: Byte 0-255 (only 0-180 is acceptable)
   
-
-  Output: 1 for success, 0 for failure
-    Failure conditions: ID out of range (0 or > SERVO_COUNT), integer higher than 180
+  Output: int value of processCode enum
 */
+
 #include <Servo.h>
 
 #define SERVO_COUNT 4
@@ -19,14 +18,14 @@ const byte pins[SERVO_COUNT] = {5, 6, 10, 11};
 
 struct servoData
 {
-  byte id;
-  byte val;
+  int id;
+  int val;
 };
 
 enum processCode
 {
   success, // data read in was valid and written to the servo
-  readFailure, // couldn't read data coming in
+  readFailure, // malformed data read in
   badId, // a bad id was referenced
   badVal // a bad value was passed in
 };
@@ -41,7 +40,8 @@ void setup()
 
 void loop()
 {
-  if (Serial.available() > 0)
+  // waiting for three adds stability with a short timeout
+  if (Serial.available() >= 3)
   {
     processCode result = processData();
     Serial.write(result);
@@ -53,15 +53,12 @@ void loop()
 // reads in new serial data for one servo
 // returns whether setting this new data was successful or not
 processCode processData()
-{
-  byte buf[3] = {0, 0, 0};
+{ 
+  int newByte = Serial.read();
 
-  // must be three so that the delimiter is read in
-  // and isn't left over in the buffer
-  if (Serial.readBytesUntil(',', buf, 3))
-  {
-    // element 0 is the servo id, element 1 is the servo value
-    servoData data = {buf[0], buf[1]};
+  if (newByte == 255) {
+    // this is the start of a transmission
+    servoData data = {Serial.read(), Serial.read()};
     return writeData(&data);
   }
 
