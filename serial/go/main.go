@@ -21,7 +21,6 @@ func main() {
 
 	// create a UDP server to receive data
 	udpconn, err := net.ListenPacket("udp", ":8000")
-
 	if err != nil {
 		log.Fatal(err)
 	}
