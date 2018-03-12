@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -12,17 +13,23 @@ import (
 )
 
 func main() {
+	if len(os.Args) < 2 {
+		panic(fmt.Errorf("expected an argument for serial port"))
+	}
+
+	portString := os.Args[1]
+
 	// connect to the MCU
-	c := &serial.Config{Name: "/dev/cu.usbmodem1431", Baud: 115200}
+	c := &serial.Config{Name: portString, Baud: 115200}
 	s, err := serial.OpenPort(c)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	// create a UDP server to receive data
 	udpconn, err := net.ListenPacket("udp", ":8000")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	stopchan := make(chan os.Signal, 1)
@@ -53,8 +60,13 @@ func main() {
 
 			// expected three bytes
 			if n == 3 {
-				id := buf[0]
-				val := buf[1]
+				if buf[0] != 255 {
+					log.Print("Didn't get delimiter!")
+					continue
+				}
+
+				id := buf[1]
+				val := buf[2]
 
 				success, err := sendData(s, id, val, true)
 
@@ -76,12 +88,9 @@ func main() {
 }
 
 func sendData(s *serial.Port, id byte, val byte, verify bool) (success bool, err error) {
-	data := []byte{id, val} // id and value bytes
-	comma := []byte(",")    // delimiter
+	data := []byte{255, id, val} // delimiter, id, and value bytes
 
-	payload := append(data, comma...)
-
-	_, err = s.Write(payload)
+	_, err = s.Write(data)
 	if err != nil {
 		return false, err
 	}
@@ -107,11 +116,11 @@ func sendData(s *serial.Port, id byte, val byte, verify bool) (success bool, err
 		}
 
 		if n < 1 {
-			return false, errors.New("didn't get a byte response")
+			return false, errors.New("didn't get a response from the mcu")
 		}
 
-		if buf[0] != 1 {
-			return false, errors.New("mcu reported write failure")
+		if buf[0] != 0 {
+			return false, fmt.Errorf("mcu reported error code: %v", buf[0])
 		}
 	}
 
