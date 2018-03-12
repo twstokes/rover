@@ -102,7 +102,6 @@ func sendData(s *serial.Port, id byte, val byte, verify bool) (success bool, err
 		// with the byte we wrote - not sure how often that's a lie and if we
 		// need to flush a buffer or something
 		n, err := s.Read(buf)
-
 		if err != nil {
 			return false, err
 		}
