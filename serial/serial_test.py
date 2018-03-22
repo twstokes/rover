@@ -1,38 +1,33 @@
 import serial
 import time
 
-ser = serial.Serial('/dev/cu.usbmodem1431', baudrate=115200, timeout=100)  # open serial port
-
-# ser = serial.Serial('/dev/cu.usbmodem1431')  # open serial port
-time.sleep(2)
+ser = serial.Serial('/dev/cu.usbmodem1431', baudrate=115200, timeout=1)
 
 val = 0
 
-while val < 180:
-    # servo = input("ID: ")
-    # val = input("Value: ")
+while val <= 180:
+    values = [255, 1, val]
+    payload = bytes(values)
 
-    # payload = [int(servo), int(val)]
-    payload = [1, val]
+    ser.write(payload)
 
-    for byte in payload:
-        ser.write(byte.to_bytes(1, 'little'))
+    result = ser.read(1)
 
-    # terminator
-    ser.write(','.encode(encoding='ascii'))
-
-    success = ord(ser.read())
-
-    if success == 1:
-        # print("Success")
-        pass
+    if len(result):
+        success = ord(result)
     else:
-        print("Failure")
-        print(val)
-    
-    val += 1
+        success = None
 
-# while True:
-    # print(ser.readline())
+    if success != 0:
+        print("Failed")
+        print(success)
+        print(val)
+    # else:
+        # print("Success!")
+        # print(val)
+
+    val += 1
+    # time.sleep(.1)
+    success = None
 
 ser.close()
