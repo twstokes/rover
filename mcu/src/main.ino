@@ -1,5 +1,5 @@
 /*
-  Input: Three bytes via serial.
+  Input: Three bytes via Serial.
     Byte 1: 255
     Byte 2: ID (1-SERVO_COUNT)
     Byte 3: Byte 0-255 (only 0-180 is acceptable)
@@ -24,10 +24,10 @@ struct servoData
 
 enum processCode
 {
-  success, // data read in was valid and written to the servo
+  success,     // data read in was valid and written to the servo
   readFailure, // malformed data read in
-  badId, // a bad id was referenced
-  badVal // a bad value was passed in
+  badId,       // a bad id was referenced
+  badVal       // a bad value was passed in
 };
 
 void setup()
@@ -50,13 +50,14 @@ void loop()
   delay(10);
 }
 
-// reads in new serial data for one servo
+// reads in new Serial data for one servo
 // returns whether setting this new data was successful or not
 processCode processData()
-{ 
+{
   int newByte = Serial.read();
 
-  if (newByte == 255) {
+  if (newByte == 255)
+  {
     // this is the start of a transmission
     servoData data = {Serial.read(), Serial.read()};
     return writeData(&data);
