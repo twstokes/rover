@@ -47,6 +47,9 @@ func main() {
 
 	for {
 		select {
+		case <-stopchan:
+			log.Print("Stopping...")
+			return
 		default:
 			// 500 ms timeout for reading new data
 			udpconn.SetReadDeadline(time.Now().Add(time.Millisecond * 500))
@@ -80,9 +83,6 @@ func main() {
 					log.Print("Failed to send new data to MCU.")
 				}
 			}
-		case <-stopchan:
-			log.Print("Stopping...")
-			return
 		}
 	}
 }
