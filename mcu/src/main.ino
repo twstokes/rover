@@ -5,12 +5,8 @@
     Byte 3: Byte 0-255 (only 0-180 is acceptable)
   
   Output: int value of processCode enum
-
-  If valid data hasn't been consumed for a second
-  the MCU is reset and servo values return to "idle".
 */
 
-#include <avr/wdt.h>
 #include <Servo.h>
 
 #define SERVO_COUNT 4
@@ -40,8 +36,6 @@ void setup()
   Serial.begin(115200);
   attachServos();
   initServos();
-  // 1 second watchdog timer
-  wdt_enable(WDTO_1S);
 }
 
 void loop()
@@ -50,12 +44,6 @@ void loop()
   if (Serial.available() >= 3)
   {
     processCode result = processData();
-
-    if (result == success) {
-      // reset watchdog - good data is coming in
-      wdt_reset();
-    }
-
     Serial.write(result);
   }
 
