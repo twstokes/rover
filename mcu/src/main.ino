@@ -5,8 +5,12 @@
     Byte 3: Byte 0-255 (only 0-180 is acceptable)
   
   Output: int value of processCode enum
+
+  If valid data hasn't been consumed for a second
+  the MCU is reset and servo values return to "idle".
 */
 
+#include <avr/wdt.h>
 #include <Servo.h>
 
 #define SERVO_COUNT 4
@@ -14,7 +18,7 @@
 // instantiate servos
 Servo servos[SERVO_COUNT];
 // output pins
-const byte pins[SERVO_COUNT] = {5, 6, 10, 11};
+const byte pins[SERVO_COUNT] = {2, 3, 4, 5};
 
 struct servoData
 {
@@ -36,6 +40,8 @@ void setup()
   Serial.begin(115200);
   attachServos();
   initServos();
+  // 1 second watchdog timer
+  wdt_enable(WDTO_1S);
 }
 
 void loop()
@@ -44,6 +50,12 @@ void loop()
   if (Serial.available() >= 3)
   {
     processCode result = processData();
+
+    if (result == success) {
+      // reset watchdog - good data is coming in
+      wdt_reset();
+    }
+
     Serial.write(result);
   }
 
@@ -92,6 +104,9 @@ void attachServos()
 }
 
 // sets all servos to middle position (90)
+// if we wanted to set a trim via the MCU
+// we could detect passing in a new type of message
+// something like 254, 1, 110
 void initServos()
 {
   for (int x = 0; x < SERVO_COUNT; x++)
