@@ -12,22 +12,41 @@ import (
 	"github.com/tarm/serial"
 )
 
+type config struct {
+	port   int
+	baud   int
+	servos int
+	// duration of not receiving UDP data
+	// before resetting servos
+	udpWait time.Duration
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		panic(fmt.Errorf("expected an argument for serial port"))
 	}
-
 	portString := os.Args[1]
 
+	conf := config{
+		port:    8000,
+		baud:    115200,
+		servos:  4,
+		udpWait: time.Second,
+	}
+
 	// connect to the MCU
-	c := &serial.Config{Name: portString, Baud: 115200}
+	c := &serial.Config{Name: portString, Baud: conf.baud}
 	s, err := serial.OpenPort(c)
 	if err != nil {
 		panic(err)
 	}
 
+	addr := net.UDPAddr{
+		Port: conf.port,
+	}
+
 	// create a UDP server to receive data
-	udpconn, err := net.ListenPacket("udp", ":8000")
+	udpconn, err := net.ListenUDP("udp", &addr)
 	if err != nil {
 		panic(err)
 	}
@@ -45,14 +64,29 @@ func main() {
 	// before sending data
 	time.Sleep(time.Second * 2)
 
+	// a safety timer - if no input has been sent,
+	// go back to "idle" values
+	t := time.NewTimer(conf.udpWait)
+
 	for {
 		select {
+		case <-t.C:
+			log.Print("Input timeout reached.")
+
+			// send idle values for all ids
+			// this could be cleaned up with a new command for the MCU
+			// this isn't great because it doesn't respect a trim
+			for i := 1; i <= conf.servos; i++ {
+				_, _ = sendData(s, i, 90, conf)
+			}
+
+			t.Reset(conf.udpWait)
 		case <-stopchan:
 			log.Print("Stopping...")
 			return
 		default:
-			// 500 ms timeout for reading new data
-			udpconn.SetReadDeadline(time.Now().Add(time.Millisecond * 500))
+			// timeout for reading new data
+			udpconn.SetReadDeadline(time.Now().Add(time.Millisecond * 10))
 
 			buf := make([]byte, 3)
 			n, _, err := udpconn.ReadFrom(buf)
@@ -68,35 +102,28 @@ func main() {
 					continue
 				}
 
-				id := buf[1]
-				val := buf[2]
+				id := int(buf[1])
+				val := int(buf[2])
 
-				success, err := sendData(s, id, val, true)
+				go func() {
+					_, err := sendData(s, id, val, conf)
 
-				if err != nil {
-					log.Print(err)
-				}
+					if err != nil {
+						log.Print(err)
+						return
+					}
+				}()
 
-				if success {
-					log.Print("Successfully wrote to MCU!")
-				} else {
-					log.Print("Failed to send new data to MCU.")
-				}
+				t.Reset(conf.udpWait)
 			}
 		}
 	}
 }
 
-func sendData(s *serial.Port, id byte, val byte, verify bool) (success bool, err error) {
-	data := []byte{255, id, val} // delimiter, id, and value bytes
+func sendData(s *serial.Port, id int, val int, c config) (success bool, err error) {
+	data := []byte{255, byte(id), byte(val)} // delimiter, id, and value bytes
 
-	_, err = s.Write(data)
-	if err != nil {
-		return false, err
-	}
-
-	// TODO - how many servos needs to be configurable
-	if id < 1 || id > 4 {
+	if id < 1 || id > c.servos {
 		return false, errors.New("id out of range")
 	}
 
@@ -104,24 +131,9 @@ func sendData(s *serial.Port, id byte, val byte, verify bool) (success bool, err
 		return false, errors.New("value out of range")
 	}
 
-	// if we want to get feedback from the MCU of success / failure
-	if verify {
-		buf := make([]byte, 1)
-		// this assumes the byte waiting to be read corresponds directly
-		// with the byte we wrote - not sure how often that's a lie and if we
-		// need to flush a buffer or something
-		n, err := s.Read(buf)
-		if err != nil {
-			return false, err
-		}
-
-		if n < 1 {
-			return false, errors.New("didn't get a response from the mcu")
-		}
-
-		if buf[0] != 0 {
-			return false, fmt.Errorf("mcu reported error code: %v", buf[0])
-		}
+	_, err = s.Write(data)
+	if err != nil {
+		return false, err
 	}
 
 	return true, nil
