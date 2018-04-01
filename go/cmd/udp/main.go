@@ -41,6 +41,7 @@ func main() {
 		safeWait: time.Second,
 	}
 
+	// run a UDP server that sends data to the MCU
 	s := udpServer{c, m, u}
 	defer s.stop()
 	s.start()
