@@ -43,8 +43,11 @@ void loop()
   // waiting for three adds stability with a short timeout
   if (Serial.available() >= 3)
   {
-    processCode result = processData();
-    Serial.write(result);
+    processData();
+
+    // disabling writes
+    // processCode result = processData();
+    // Serial.write(result);
   }
 
   delay(10);
