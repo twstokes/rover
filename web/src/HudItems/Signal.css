@@ -1,0 +1,5 @@
+.Signal {
+  border: 1px solid green;
+  grid-column: 1 / 3;
+  color: white;
+}
