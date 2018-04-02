@@ -1,5 +1,7 @@
 # Rover
 
+![Rover](https://github.com/twstokes/rover/raw/master/media/rover.jpg)
+
 ### Current status:
 The vehicle can be controlled remotely via UDP
 
