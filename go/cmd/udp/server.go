@@ -53,6 +53,8 @@ func (u *udpServer) start() {
 			data := buf[1:]
 
 			switch command {
+			case mcu.SetServos:
+				u.setServos(data)
 			case mcu.SetServo:
 				u.setServo(data)
 			case mcu.SetLights:
@@ -96,6 +98,16 @@ func (u *udpServer) setServo(buf []byte) {
 
 	go func() {
 		_, err := u.mcu.SetServo(id, val)
+		if err != nil {
+			log.Print(err)
+		}
+	}()
+}
+
+// pass the data straight through to set all servos
+func (u *udpServer) setServos(buf []byte) {
+	go func() {
+		_, err := u.mcu.SetServos(buf)
 		if err != nil {
 			log.Print(err)
 		}
