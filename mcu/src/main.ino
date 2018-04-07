@@ -9,6 +9,10 @@
 #include <Servo.h>
 #include <Adafruit_NeoPixel.h>
 
+// the size of a serial payload
+// this includes the command and any accompanying data for it
+#define PAYLOAD_SIZE 8
+// number of servos
 #define SERVO_COUNT 4
 // pin used for NeoPixels
 #define NEOPIN 8
@@ -19,7 +23,7 @@
 
 // instantiate servos
 Servo servos[SERVO_COUNT];
-// output pins
+// servo output pins
 const byte pins[SERVO_COUNT] = {2, 3, 4, 5};
 // instantiate NeoPixel strip
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_COUNT, NEOPIN);
@@ -63,6 +67,15 @@ void loop()
 // returns whether setting this new data was successful or not
 processCode processData(payload *p)
 {
+  // setting multiple servos at once
+  if (p->cmd == SetServos)
+  {
+    servoVal s[4];
+    memcpy(&s, p->data, sizeof(s));
+    return setServos(s);
+  }
+
+  // setting a single servo
   if (p->cmd == SetServo)
   {
     servoData s;
@@ -78,6 +91,21 @@ processCode processData(payload *p)
   }
 
   return ReadFailure;
+}
+
+// this is more efficient than setServo for constant data streams
+processCode setServos(servoVal *s)
+{
+  for (uint8_t x = 1; x <= SERVO_COUNT; x++)
+  {
+    servoData d = {.id = x, .val = s[x - 1]};
+    processCode status = setServo(&d);
+
+    if (status != Success)
+      return status;
+  }
+
+  return Success;
 }
 
 // does sanity checking and sets servo's new value if tests pass
@@ -113,7 +141,7 @@ processCode setLights(lightData *l)
 }
 
 // for setting an individual LED
-processCode setLed(uint8_t id, ledColor c)
+processCode setLed(ledId id, ledColor c)
 {
   // the id can't be less than 1 or greater than the number of lights
   if (id < 1 || id > LED_COUNT)
@@ -126,7 +154,7 @@ processCode setLed(uint8_t id, ledColor c)
 }
 
 // for setting the entire row of LEDs
-processCode setLedRow(uint8_t id, ledColor c)
+processCode setLedRow(ledRowId id, ledColor c)
 {
   // currently only support one row
   if (id != 1)

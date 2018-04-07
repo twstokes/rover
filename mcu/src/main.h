@@ -1,27 +1,28 @@
-// the size of a serial payload
-// this includes the command and any accompanying data for it
-#define PAYLOAD_SIZE 8
+typedef uint8_t servoId, servoVal, ledId, ledRowId, color;
 
+// a generic serial payload
 struct payload
 {
     uint8_t cmd;   // first serial byte
     uint8_t *data; // caution - accessing this shouldn't exceed PAYLOAD_SIZE - 1
 };
 
+// used for commanding a single servo
 struct servoData
 {
-    uint8_t id, val;
+    servoId id;
+    servoVal val;
 };
 
 struct ledColor
 {
-    uint8_t r, g, b;
+    color r, g, b;
 };
 
 struct lightData
 {
-    uint8_t id;
-    uint8_t mode; // this isn't of type lightMode to make serialization easier
+    ledId id;
+    uint8_t mode; // this isn't of type lightMode to make serialization simpler
     ledColor color;
 };
 
@@ -33,8 +34,9 @@ enum lightMode
 
 enum command
 {
-    SetServo,           // setting a servo
-    SetLights,          // setting the LEDs
+    SetServo,  // setting a servo
+    SetServos, // setting all servos
+    SetLights, // setting the LEDs
 };
 
 enum processCode
