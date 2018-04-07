@@ -32,6 +32,7 @@ func (u *udpServer) start() {
 		case <-t.C:
 			log.Print("Safety timeout reached.")
 			u.mcu.ResetServos()
+			u.mcu.ResetLeds()
 			t.Reset(u.config.safeWait)
 		case <-stopchan:
 			log.Print("Stopping...")
@@ -40,32 +41,27 @@ func (u *udpServer) start() {
 			// timeout for reading new data
 			u.udp.SetReadDeadline(time.Now().Add(time.Millisecond * 10))
 
-			buf := make([]byte, 3)
-			n, _, err := u.udp.ReadFrom(buf)
+			buf := make([]byte, mcu.MaxPayload)
+			_, _, err := u.udp.ReadFrom(buf)
 			if err != nil {
 				// may be a timeout
 				continue
 			}
 
-			// expected three bytes
-			if n == 3 {
-				if buf[0] != 255 {
-					log.Print("Didn't get delimiter!")
-					continue
-				}
+			command := mcu.Command(buf[0])
+			data := buf[1:]
 
-				id := int(buf[1])
-				val := int(buf[2])
-
-				go func() {
-					_, err := u.mcu.SetServo(id, val)
-					if err != nil {
-						log.Print(err)
-					}
-				}()
-
-				t.Reset(u.config.safeWait)
+			switch command {
+			case mcu.SetServo:
+				u.servoCommand(data)
+			case mcu.SetLights:
+				u.setLights(data)
+			default:
+				log.Print("Command not recognized.")
+				continue
 			}
+
+			t.Reset(u.config.safeWait)
 		}
 	}
 }
@@ -74,4 +70,33 @@ func (u *udpServer) stop() {
 	log.Print("Cleaning up.")
 	u.udp.Close()
 	u.mcu.Close()
+}
+
+// pull the light data out and send it to the MCU
+func (u *udpServer) setLights(buf []byte) {
+	id := int(buf[0])
+	mode := mcu.LightMode(buf[1])
+	r := int(buf[2])
+	g := int(buf[3])
+	b := int(buf[4])
+
+	go func() {
+		_, err := u.mcu.SetLights(id, mode, r, g, b)
+		if err != nil {
+			log.Print(err)
+		}
+	}()
+}
+
+// pull the servo data out and send it to the MCU
+func (u *udpServer) servoCommand(buf []byte) {
+	id := int(buf[0])
+	val := int(buf[1])
+
+	go func() {
+		_, err := u.mcu.SetServo(id, val)
+		if err != nil {
+			log.Print(err)
+		}
+	}()
 }
