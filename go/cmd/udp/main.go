@@ -14,6 +14,7 @@ var (
 	baudRate   = flag.Int("baud", 115200, "serial baud rate")
 	udpPort    = flag.Int("udpPort", 8000, "udp port")
 	servos     = flag.Int("servos", 4, "number of servos")
+	leds       = flag.Int("leds", 8, "number of leds")
 )
 
 func main() {
@@ -21,7 +22,7 @@ func main() {
 	flag.Parse()
 
 	// connect to the MCU
-	m, err := mcu.Connect(*serialPort, *baudRate, *servos)
+	m, err := mcu.Connect(*serialPort, *baudRate, *servos, *leds)
 	if err != nil {
 		panic(err)
 	}

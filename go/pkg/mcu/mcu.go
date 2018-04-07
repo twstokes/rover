@@ -10,11 +10,38 @@ import (
 // Controller is what handles MCU operations on the Rover
 type Controller struct {
 	servos int
+	leds   int
 	serial *serial.Port
 }
 
+// the maximum serial payload size in bytes
+// this should match what's defined on the MCU
+const MaxPayload = 8
+
+// Command is a command that the MCU supports
+type Command byte
+
+// LightMode handles different modes for lights
+type LightMode byte
+
+// commands
+const (
+	// SetServo command
+	SetServo Command = iota
+	// SetLights command
+	SetLights
+)
+
+// light modes
+const (
+	// Single LED mode
+	Single LightMode = iota
+	// Row of LEDs mode
+	Row
+)
+
 // Connect connects to the MCU
-func Connect(port string, baud int, servos int) (c *Controller, err error) {
+func Connect(port string, baud int, servos int, leds int) (c *Controller, err error) {
 	conf := &serial.Config{Name: port, Baud: baud}
 	s, err := serial.OpenPort(conf)
 	if err != nil {
@@ -23,6 +50,7 @@ func Connect(port string, baud int, servos int) (c *Controller, err error) {
 
 	c = &Controller{
 		servos: servos,
+		leds:   leds,
 		serial: s,
 	}
 	// add a slight delay in case we need to wait on the MCU
@@ -40,6 +68,11 @@ func (c *Controller) ResetServos() {
 	}
 }
 
+// ResetLeds resets the LEDs to red
+func (c *Controller) ResetLeds() {
+	c.SetLights(1, Row, 127, 0, 0)
+}
+
 // Close closes the serial connection and cleans up
 func (c *Controller) Close() {
 	c.serial.Close()
@@ -55,12 +88,42 @@ func (c *Controller) SetServo(id int, val int) (success bool, err error) {
 		return false, errors.New("value out of range")
 	}
 
-	data := []byte{255, byte(id), byte(val)} // delimiter, id, and value bytes
-	_, err = c.serial.Write(data)
+	data := []byte{byte(SetServo), byte(id), byte(val)}
+	return c.writeCommand(data)
+}
+
+// SetLights sends a value to change the LEDs
+func (c *Controller) SetLights(id int, mode LightMode, r int, g int, b int) (success bool, err error) {
+	switch mode {
+	case Row:
+		if id != 1 {
+			return false, errors.New("id out of range for row")
+		}
+	case Single:
+		if id < 1 || id > c.leds {
+			return false, errors.New("id out of range for led")
+		}
+	default:
+		return false, errors.New("unknown light mode")
+	}
+
+	data := []byte{byte(SetLights), byte(id), byte(mode), byte(r), byte(g), byte(b)}
+	return c.writeCommand(data)
+}
+
+// writes the entire command and payload to the MCU
+func (c *Controller) writeCommand(data []byte) (success bool, err error) {
+	if len(data) > MaxPayload {
+		return false, errors.New("payload too large")
+	}
+
+	// pads data to fit expected payload
+	payload := make([]byte, MaxPayload)
+	copy(payload, data)
+
+	_, err = c.serial.Write(payload)
 	if err != nil {
 		return false, err
 	}
-
-	// if we wanted to read a confirmation value back from the MCU here we could
 	return true, nil
 }
