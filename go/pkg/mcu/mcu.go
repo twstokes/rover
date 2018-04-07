@@ -14,7 +14,7 @@ type Controller struct {
 	serial *serial.Port
 }
 
-// the maximum serial payload size in bytes
+// MaxPayload is the maximum serial payload size in bytes
 // this should match what's defined on the MCU
 const MaxPayload = 8
 
@@ -28,6 +28,8 @@ type LightMode byte
 const (
 	// SetServo command
 	SetServo Command = iota
+	// SetServos command
+	SetServos
 	// SetLights command
 	SetLights
 )
@@ -89,7 +91,17 @@ func (c *Controller) SetServo(id int, val int) (success bool, err error) {
 	}
 
 	data := []byte{byte(SetServo), byte(id), byte(val)}
-	return c.writeCommand(data)
+	return c.write(data)
+}
+
+// SetServos is a more efficient way to set all servos at once
+func (c *Controller) SetServos(vals []byte) (success bool, err error) {
+	if len(vals) < c.servos {
+		return false, errors.New("servo count mismatch")
+	}
+
+	data := append([]byte{byte(SetServos)}, vals...)
+	return c.write(data)
 }
 
 // SetLights sends a value to change the LEDs
@@ -108,11 +120,11 @@ func (c *Controller) SetLights(id int, mode LightMode, r int, g int, b int) (suc
 	}
 
 	data := []byte{byte(SetLights), byte(id), byte(mode), byte(r), byte(g), byte(b)}
-	return c.writeCommand(data)
+	return c.write(data)
 }
 
-// writes the entire command and payload to the MCU
-func (c *Controller) writeCommand(data []byte) (success bool, err error) {
+// writes data to the MCU
+func (c *Controller) write(data []byte) (success bool, err error) {
 	if len(data) > MaxPayload {
 		return false, errors.New("payload too large")
 	}
