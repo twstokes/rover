@@ -41,6 +41,7 @@ func (u *udpServer) start() {
 			// timeout for reading new data
 			u.udp.SetReadDeadline(time.Now().Add(time.Millisecond * 10))
 
+			// note: sending data via UDP doesn't need to be the exact MCU payload size
 			buf := make([]byte, mcu.MaxPayload)
 			_, _, err := u.udp.ReadFrom(buf)
 			if err != nil {
