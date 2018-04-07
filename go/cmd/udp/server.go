@@ -54,7 +54,7 @@ func (u *udpServer) start() {
 
 			switch command {
 			case mcu.SetServo:
-				u.servoCommand(data)
+				u.setServo(data)
 			case mcu.SetLights:
 				u.setLights(data)
 			default:
@@ -90,7 +90,7 @@ func (u *udpServer) setLights(buf []byte) {
 }
 
 // pull the servo data out and send it to the MCU
-func (u *udpServer) servoCommand(buf []byte) {
+func (u *udpServer) setServo(buf []byte) {
 	id := int(buf[0])
 	val := int(buf[1])
 
