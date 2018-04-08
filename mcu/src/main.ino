@@ -96,9 +96,9 @@ processCode processData(payload *p)
 // this is more efficient than setServo for constant data streams
 processCode setServos(servoVal *s)
 {
-  for (uint8_t x = 1; x <= SERVO_COUNT; x++)
+  for (servoId id = 1; id <= SERVO_COUNT; id++)
   {
-    servoData d = {.id = x, .val = s[x - 1]};
+    servoData d = {.id = id, .val = s[id - 1]};
     processCode status = setServo(&d);
 
     if (status != Success)
@@ -128,14 +128,10 @@ processCode setServo(servoData *s)
 processCode setLights(lightData *l)
 {
   if (l->mode == Single)
-  {
     return setLed(l->id, l->color);
-  }
 
   if (l->mode == Row)
-  {
     return setLedRow(l->id, l->color);
-  }
 
   return Success;
 }
