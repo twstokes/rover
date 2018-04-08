@@ -4,6 +4,8 @@ import (
 	"flag"
 	"log"
 	"net"
+	"os"
+	"os/signal"
 	"time"
 
 	"github.com/twstokes/rover/go/pkg/mcu"
@@ -42,8 +44,18 @@ func main() {
 		safeWait: time.Second,
 	}
 
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, os.Interrupt)
+
+	stopChan := make(chan bool, 1)
+
+	go func() {
+		<-sig
+		stopChan <- true
+	}()
+
 	// run a UDP server that sends data to the MCU
 	s := udpServer{c, m, u}
 	defer s.stop()
-	s.start()
+	s.start(stopChan)
 }
