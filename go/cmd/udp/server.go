@@ -1,10 +1,10 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"net"
-	"os"
-	"os/signal"
+	"sync"
 	"time"
 
 	"github.com/twstokes/rover/go/pkg/mcu"
@@ -20,12 +20,11 @@ type udpServer struct {
 	udp    *net.UDPConn
 }
 
-func (u *udpServer) start() {
-	stopchan := make(chan os.Signal, 1)
-	signal.Notify(stopchan, os.Interrupt)
-
+func (u *udpServer) start(stopChan chan bool) {
 	// create our safety timer
 	t := time.NewTimer(u.config.safeWait)
+
+	waitGroup := &sync.WaitGroup{}
 
 	for {
 		select {
@@ -34,82 +33,102 @@ func (u *udpServer) start() {
 			u.mcu.ResetServos()
 			u.mcu.ResetLeds()
 			t.Reset(u.config.safeWait)
-		case <-stopchan:
+		case <-stopChan:
 			log.Print("Stopping...")
+			log.Print("Waiting for routines to finish...")
+			waitGroup.Wait()
 			return
 		default:
 			// timeout for reading new data
 			u.udp.SetReadDeadline(time.Now().Add(time.Millisecond * 10))
-
-			// note: sending data via UDP doesn't need to be the exact MCU payload size
-			buf := make([]byte, mcu.MaxPayload)
-			_, _, err := u.udp.ReadFrom(buf)
+			// 24 bytes is arbitrary, current payloads are all < mcu.MaxPayload
+			buf := make([]byte, 24)
+			n, _, err := u.udp.ReadFrom(buf)
 			if err != nil {
 				// may be a timeout
+				log.Print(err)
 				continue
 			}
 
-			command := mcu.Command(buf[0])
+			// this is purely for the current implementation
+			// where the two are tightly coupled
+			if n > mcu.MaxPayload {
+				log.Print("Warning: More bytes read from UDP than max MCU payload.")
+			}
+
+			// figure out what command this is
+			cmd, err := u.processCommandByte(buf[0])
+			if err != nil {
+				log.Print(err)
+			}
+
+			// get the rest of the data needed for the command
 			data := buf[1:]
 
-			switch command {
-			case mcu.SetServos:
-				u.setServos(data)
-			case mcu.SetServo:
-				u.setServo(data)
-			case mcu.SetLights:
-				u.setLights(data)
-			default:
-				log.Print("Command not recognized.")
-				continue
-			}
+			// using waitgroups so that we can send remaining
+			// MCU data before closing out the serial port during a shutdown
+
+			// warning: if we overload serial writes by sending too much data
+			// and the MCU gets backed up, we may end up waiting when we really want things to
+			// stop immediately
+			waitGroup.Add(1)
+			go func() {
+				defer waitGroup.Done()
+				_, err = cmd(data)
+
+				if err != nil {
+					log.Print(err)
+				}
+			}()
 
 			t.Reset(u.config.safeWait)
 		}
 	}
 }
 
+// takes in a raw byte, determines if it's a supported command
+func (u *udpServer) processCommandByte(raw byte) (func([]byte) (bool, error), error) {
+	cmd := mcu.Command(raw)
+
+	switch cmd {
+	case mcu.SetServos:
+		return u.setServos, nil
+	case mcu.SetServo:
+		return u.setServo, nil
+	case mcu.SetLights:
+		return u.setLights, nil
+	default:
+		return nil, errors.New("command not recognized")
+	}
+}
+
 func (u *udpServer) stop() {
 	log.Print("Cleaning up.")
+
 	u.udp.Close()
 	u.mcu.Close()
 }
 
 // pull the light data out and send it to the MCU
-func (u *udpServer) setLights(buf []byte) {
+func (u *udpServer) setLights(buf []byte) (bool, error) {
 	id := int(buf[0])
 	mode := mcu.LightMode(buf[1])
 	r := int(buf[2])
 	g := int(buf[3])
 	b := int(buf[4])
 
-	go func() {
-		_, err := u.mcu.SetLights(id, mode, r, g, b)
-		if err != nil {
-			log.Print(err)
-		}
-	}()
+	return u.mcu.SetLights(id, mode, r, g, b)
 }
 
 // pull the servo data out and send it to the MCU
-func (u *udpServer) setServo(buf []byte) {
+func (u *udpServer) setServo(buf []byte) (bool, error) {
 	id := int(buf[0])
 	val := int(buf[1])
 
-	go func() {
-		_, err := u.mcu.SetServo(id, val)
-		if err != nil {
-			log.Print(err)
-		}
-	}()
+	return u.mcu.SetServo(id, val)
 }
 
 // pass the data straight through to set all servos
-func (u *udpServer) setServos(buf []byte) {
-	go func() {
-		_, err := u.mcu.SetServos(buf)
-		if err != nil {
-			log.Print(err)
-		}
-	}()
+func (u *udpServer) setServos(buf []byte) (bool, error) {
+	return u.mcu.SetServos(buf)
 }
