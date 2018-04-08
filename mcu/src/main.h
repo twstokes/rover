@@ -1,4 +1,4 @@
-typedef uint8_t servoId, servoVal, ledId, ledRowId, color;
+typedef uint8_t servoId, servoVal, ledId, ledRowId, colorIntensity;
 
 // a generic serial payload
 struct payload
@@ -16,27 +16,21 @@ struct servoData
 
 struct ledColor
 {
-    color r, g, b;
+    colorIntensity r, g, b;
 };
 
 struct lightData
 {
     ledId id;
-    uint8_t mode; // this isn't of type lightMode to make serialization simpler
     ledColor color;
-};
-
-enum lightMode
-{
-    Single, // single led
-    Row,    // an entire row
 };
 
 enum command
 {
     SetServo,  // setting a servo
     SetServos, // setting all servos
-    SetLights, // setting the LEDs
+    SetLight,  // setting an LEDs
+    SetLights, // setting all the LEDs
 };
 
 enum processCode

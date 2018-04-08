@@ -67,14 +67,6 @@ void loop()
 // returns whether setting this new data was successful or not
 processCode processData(payload *p)
 {
-  // setting multiple servos at once
-  if (p->cmd == SetServos)
-  {
-    servoVal s[4];
-    memcpy(&s, p->data, sizeof(s));
-    return setServos(s);
-  }
-
   // setting a single servo
   if (p->cmd == SetServo)
   {
@@ -83,32 +75,34 @@ processCode processData(payload *p)
     return setServo(&s);
   }
 
-  if (p->cmd == SetLights)
+  // setting multiple servos at once
+  if (p->cmd == SetServos)
+  {
+    servoVal s[4];
+    memcpy(&s, p->data, sizeof(s));
+    return setServos(s);
+  }
+
+  // setting a single LED
+  if (p->cmd == SetLight)
   {
     lightData l;
     memcpy(&l, p->data, sizeof(l));
-    return setLights(&l);
+    return setLight(&l);
+  }
+
+  // setting all LEDs
+  if (p->cmd == SetLights)
+  {
+    ledColor c;
+    memcpy(&c, p->data, sizeof(c));
+    return setLights(&c);
   }
 
   return ReadFailure;
 }
 
-// this is more efficient than setServo for constant data streams
-processCode setServos(servoVal *s)
-{
-  for (servoId id = 1; id <= SERVO_COUNT; id++)
-  {
-    servoData d = {.id = id, .val = s[id - 1]};
-    processCode status = setServo(&d);
-
-    if (status != Success)
-      return status;
-  }
-
-  return Success;
-}
-
-// does sanity checking and sets servo's new value if tests pass
+// sets a single servo
 processCode setServo(servoData *s)
 {
   // the id can't be less than 1 or greater than number of servos
@@ -124,42 +118,42 @@ processCode setServo(servoData *s)
   return Success;
 }
 
-// for setting the LEDs
-processCode setLights(lightData *l)
+// for setting all servos at once
+// this is more efficient than setServo for constant data streams
+processCode setServos(servoVal *s)
 {
-  if (l->mode == Single)
-    return setLed(l->id, l->color);
+  for (servoId id = 1; id <= SERVO_COUNT; id++)
+  {
+    servoData d = {.id = id, .val = s[id - 1]};
+    processCode status = setServo(&d);
 
-  if (l->mode == Row)
-    return setLedRow(l->id, l->color);
+    if (status != Success)
+      return status;
+  }
 
   return Success;
 }
 
 // for setting an individual LED
-processCode setLed(ledId id, ledColor c)
+processCode setLight(lightData *l)
 {
   // the id can't be less than 1 or greater than the number of lights
-  if (id < 1 || id > LED_COUNT)
+  if (l->id < 1 || l->id > LED_COUNT)
     return BadId;
 
   // set the pixel color
-  strip.setPixelColor(id - 1, c.r, c.g, c.b);
+  strip.setPixelColor(l->id - 1, l->color.r, l->color.g, l->color.b);
   strip.show();
   return Success;
 }
 
-// for setting the entire row of LEDs
-processCode setLedRow(ledRowId id, ledColor c)
+// for setting all LEDs at once
+processCode setLights(ledColor *c)
 {
-  // currently only support one row
-  if (id != 1)
-    return BadId;
-
   for (uint8_t x = 0; x < LED_COUNT; x++)
   {
     // set the pixel color
-    strip.setPixelColor(x, c.r, c.g, c.b);
+    strip.setPixelColor(x, c->r, c->g, c->b);
   }
 
   strip.show();
