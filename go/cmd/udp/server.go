@@ -95,6 +95,8 @@ func (u *udpServer) processCommandByte(raw byte) (func([]byte) (bool, error), er
 		return u.setServos, nil
 	case mcu.SetServo:
 		return u.setServo, nil
+	case mcu.SetLight:
+		return u.setLight, nil
 	case mcu.SetLights:
 		return u.setLights, nil
 	default:
@@ -109,17 +111,6 @@ func (u *udpServer) stop() {
 	u.mcu.Close()
 }
 
-// pull the light data out and send it to the MCU
-func (u *udpServer) setLights(buf []byte) (bool, error) {
-	id := int(buf[0])
-	mode := mcu.LightMode(buf[1])
-	r := int(buf[2])
-	g := int(buf[3])
-	b := int(buf[4])
-
-	return u.mcu.SetLights(id, mode, r, g, b)
-}
-
 // pull the servo data out and send it to the MCU
 func (u *udpServer) setServo(buf []byte) (bool, error) {
 	id := int(buf[0])
@@ -131,4 +122,23 @@ func (u *udpServer) setServo(buf []byte) (bool, error) {
 // pass the data straight through to set all servos
 func (u *udpServer) setServos(buf []byte) (bool, error) {
 	return u.mcu.SetServos(buf)
+}
+
+// pull the light data out and send it to the MCU
+func (u *udpServer) setLight(buf []byte) (bool, error) {
+	id := int(buf[0])
+	r := int(buf[1])
+	g := int(buf[2])
+	b := int(buf[3])
+
+	return u.mcu.SetLight(id, r, g, b)
+}
+
+// pull the light data out and send it to the MCU
+func (u *udpServer) setLights(buf []byte) (bool, error) {
+	r := int(buf[0])
+	g := int(buf[1])
+	b := int(buf[2])
+
+	return u.mcu.SetLights(r, g, b)
 }
