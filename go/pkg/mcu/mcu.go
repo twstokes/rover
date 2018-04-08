@@ -91,7 +91,7 @@ func (c *Controller) SetServo(id int, val int) (success bool, err error) {
 	}
 
 	data := []byte{byte(SetServo), byte(id), byte(val)}
-	return c.write(data)
+	return c.send(data)
 }
 
 // SetServos is a more efficient way to set all servos at once
@@ -101,7 +101,7 @@ func (c *Controller) SetServos(vals []byte) (success bool, err error) {
 	}
 
 	data := append([]byte{byte(SetServos)}, vals...)
-	return c.write(data)
+	return c.send(data)
 }
 
 // SetLights sends a value to change the LEDs
@@ -120,11 +120,11 @@ func (c *Controller) SetLights(id int, mode LightMode, r int, g int, b int) (suc
 	}
 
 	data := []byte{byte(SetLights), byte(id), byte(mode), byte(r), byte(g), byte(b)}
-	return c.write(data)
+	return c.send(data)
 }
 
-// writes data to the MCU
-func (c *Controller) write(data []byte) (success bool, err error) {
+// sends data to the MCU
+func (c *Controller) send(data []byte) (success bool, err error) {
 	if len(data) > MaxPayload {
 		return false, errors.New("payload too large")
 	}
