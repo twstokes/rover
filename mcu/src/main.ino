@@ -47,31 +47,19 @@ processCode processPayload(uint8_t *buf)
       .cmd = buf[0],
       .data = &buf[1]};
 
-  // setting a single servo
-  if (p.cmd == SetServo)
+  switch (p.cmd)
   {
+  case SetServo:
     servoData s;
     memcpy(&s, p.data, sizeof(s));
     return r.setServo(s.id, s.val);
-  }
-
-  // setting multiple servos at once
-  if (p.cmd == SetServos)
-  {
+  case SetServos:
     return r.setServos(p.data);
-  }
-
-  // setting a single LED
-  if (p.cmd == SetLight)
-  {
+  case SetLight:
     lightData l;
     memcpy(&l, p.data, sizeof(l));
     return r.setLight(l.id, l.color);
-  }
-
-  // setting all LEDs
-  if (p.cmd == SetLights)
-  {
+  case SetLights:
     ledColor c;
     memcpy(&c, p.data, sizeof(c));
     return r.setLights(c);
