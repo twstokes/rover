@@ -11,8 +11,8 @@ Rover::Rover(uint8_t numServos, uint8_t *servoPins) : numLeds(0)
 // rover with lights
 Rover::Rover(uint8_t numServos, const uint8_t *servoPins, uint8_t numLeds, uint8_t ledPin)
 {
-  initServos(numServos, servoPins);
   initLeds(numLeds, ledPin);
+  initServos(numServos, servoPins);
 }
 
 // deconstructor
