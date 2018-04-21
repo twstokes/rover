@@ -21,25 +21,16 @@ const MaxPayload = 8
 // Command is a command that the MCU supports
 type Command byte
 
-// LightMode handles different modes for lights
-type LightMode byte
-
 // commands
 const (
 	// SetServo command
 	SetServo Command = iota
 	// SetServos command
 	SetServos
+	// SetLight command
+	SetLight
 	// SetLights command
 	SetLights
-)
-
-// light modes
-const (
-	// Single LED mode
-	Single LightMode = iota
-	// Row of LEDs mode
-	Row
 )
 
 // Connect connects to the MCU
@@ -72,7 +63,7 @@ func (c *Controller) ResetServos() {
 
 // ResetLeds resets the LEDs to red
 func (c *Controller) ResetLeds() {
-	c.SetLights(1, Row, 127, 0, 0)
+	c.SetLights(127, 0, 0)
 }
 
 // Close closes the serial connection and cleans up
@@ -104,22 +95,15 @@ func (c *Controller) SetServos(vals []byte) (success bool, err error) {
 	return c.send(data)
 }
 
-// SetLights sends a value to change the LEDs
-func (c *Controller) SetLights(id int, mode LightMode, r int, g int, b int) (success bool, err error) {
-	switch mode {
-	case Row:
-		if id != 1 {
-			return false, errors.New("id out of range for row")
-		}
-	case Single:
-		if id < 1 || id > c.leds {
-			return false, errors.New("id out of range for led")
-		}
-	default:
-		return false, errors.New("unknown light mode")
-	}
+// SetLight changes a single LED
+func (c *Controller) SetLight(id int, r int, g int, b int) (success bool, err error) {
+	data := []byte{byte(SetLights), byte(id), byte(r), byte(g), byte(b)}
+	return c.send(data)
+}
 
-	data := []byte{byte(SetLights), byte(id), byte(mode), byte(r), byte(g), byte(b)}
+// SetLights changes all LEDs
+func (c *Controller) SetLights(r int, g int, b int) (success bool, err error) {
+	data := []byte{byte(SetLights), byte(r), byte(g), byte(b)}
 	return c.send(data)
 }
 

@@ -1,4 +1,10 @@
-typedef uint8_t servoId, servoVal, ledId, ledRowId, color;
+#include "Rover.h"
+
+using namespace rover;
+
+// the size of a serial payload
+// this includes the command and any accompanying data for it
+#define PAYLOAD_SIZE 8
 
 // a generic serial payload
 struct payload
@@ -7,42 +13,12 @@ struct payload
     uint8_t *data; // caution - accessing this shouldn't exceed PAYLOAD_SIZE - 1
 };
 
-// used for commanding a single servo
-struct servoData
-{
-    servoId id;
-    servoVal val;
-};
-
-struct ledColor
-{
-    color r, g, b;
-};
-
-struct lightData
-{
-    ledId id;
-    uint8_t mode; // this isn't of type lightMode to make serialization simpler
-    ledColor color;
-};
-
-enum lightMode
-{
-    Single, // single led
-    Row,    // an entire row
-};
-
 enum command
 {
     SetServo,  // setting a servo
     SetServos, // setting all servos
-    SetLights, // setting the LEDs
+    SetLight,  // setting an LEDs
+    SetLights, // setting all the LEDs
 };
 
-enum processCode
-{
-    Success,     // data read in was valid and written to the servo
-    ReadFailure, // malformed data read in
-    BadId,       // a bad id was referenced
-    BadVal       // a bad value was passed in
-};
+processCode processPayload(uint8_t *);
