@@ -108,11 +108,8 @@ while True:
 			# "a" button
 			if event.button == 11:
 				setLights(lightsToggled)
+				lightsToggled = not lightsToggled
 
-				if lightsToggled:
-					lightsToggled = False
-				else:
-					lightsToggled = True
 		
 		if event.type == pygame.JOYAXISMOTION:
 			# steering
