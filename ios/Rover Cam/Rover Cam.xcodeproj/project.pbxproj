@@ -108,7 +108,7 @@
 				C3CD7E1F2290609C00B6A52A /* Helpers */,
 				C3CD7E10228F79FC00B6A52A /* Services */,
 				C3CD7DEB228F765300B6A52A /* AppDelegate.swift */,
-				C3CD7E0E228F79E600B6A52A /* VIews */,
+				C3CD7E0E228F79E600B6A52A /* Views */,
 				C3CD7DEF228F765300B6A52A /* Main.storyboard */,
 				C3CD7DF2228F765400B6A52A /* Assets.xcassets */,
 				C3CD7DF4228F765400B6A52A /* LaunchScreen.storyboard */,
@@ -134,12 +134,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C3CD7E0E228F79E600B6A52A /* VIews */ = {
+		C3CD7E0E228F79E600B6A52A /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				C3CD7DED228F765300B6A52A /* MainViewController.swift */,
 			);
-			path = VIews;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		C3CD7E10228F79FC00B6A52A /* Services */ = {
