@@ -3,7 +3,7 @@
 using namespace rover;
 
 // rover with no lights
-Rover::Rover(uint8_t numServos, uint8_t *servoPins) : numLeds(0)
+Rover::Rover(uint8_t numServos, const uint8_t *servoPins) : numLeds(0)
 {
   initServos(numServos, servoPins);
 }
