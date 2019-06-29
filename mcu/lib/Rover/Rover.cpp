@@ -22,10 +22,10 @@ Rover::~Rover()
 
 void Rover::initLeds(uint8_t n, uint8_t l)
 {
-  strip = Adafruit_NeoPixel(n, l);
+  strip = new Adafruit_NeoPixel(n, l);
 
-  strip.begin();
-  strip.show();
+  strip->begin();
+  strip->show();
 
   numLeds = n;
 }
@@ -36,6 +36,8 @@ void Rover::initLeds(uint8_t n, uint8_t l)
 // and it could be stored in persistent memory see issue #1
 void Rover::initServos(uint8_t n, const uint8_t *p)
 {
+  servos = new Servo[n];
+
   for (int x = 0; x < n; x++)
   {
     servos[x].attach(p[x]);
@@ -84,8 +86,8 @@ processCode Rover::setLight(ledId id, ledColor c)
     return BadId;
 
   // set the pixel color
-  strip.setPixelColor(id - 1, c.r, c.g, c.b);
-  strip.show();
+  strip->setPixelColor(id - 1, c.r, c.g, c.b);
+  strip->show();
   return Success;
 }
 
@@ -95,9 +97,9 @@ processCode Rover::setLights(ledColor c)
   for (uint8_t x = 0; x < numLeds; x++)
   {
     // set the pixel color
-    strip.setPixelColor(x, c.r, c.g, c.b);
+    strip->setPixelColor(x, c.r, c.g, c.b);
   }
 
-  strip.show();
+  strip->show();
   return Success;
 }

@@ -48,8 +48,8 @@ protected:
     uint8_t
         numServos,
         numLeds;
-    Servo servos[];
-    Adafruit_NeoPixel strip;
+    Servo *servos;
+    Adafruit_NeoPixel *strip;
 
     void
         initLeds(uint8_t, uint8_t),

@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "main.h"
 
 // number of servos
@@ -13,7 +14,8 @@
 const uint8_t servoPins[SERVO_COUNT] = {2, 3, 4, 5};
 
 // initialize a rover
-Rover r = Rover(SERVO_COUNT, servoPins, LED_COUNT, NEO_PIN);
+// Rover r = Rover(SERVO_COUNT, servoPins, LED_COUNT, NEO_PIN);
+Rover r = Rover(SERVO_COUNT, servoPins);
 
 void setup()
 {
