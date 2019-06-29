@@ -1,12 +1,18 @@
 ### Hardware
-Arduino Pro Micro Atmega32U4 5V 16Mhz (HiLetgo) 
+
+Arduino Pro Micro Atmega32U4 5V 16Mhz (HiLetgo)
 
 Note: Though this has "Pro Micro" on the board, it's known as the Leonardo. The SparkFun brands must be the true "Pro Micro". HiLetgo's product page for this says to use Arduino Leonardo. Product ASIN: B01MTU9GOB
 
-### Notes
+### Troubleshooting
+
 During development, this board was temporarily bricked via a bad firmware upload.
 
-####How to reset:
+Cleaning out the PlatformIO directories before upload may have fixed our bricked firmware:
+`rm -r .pioenvs .piolibdeps`
+
+#### How to reset the MCU:
+
 - Use the Arduino software and select Arduino Leonardo
 - Choose a simple sketch (like Blink) so that it can compile and upload quickly (note: on this board the LED to blink can be pin 17)
 - Jumper gnd to rst first time (Windows will chime when this happens and the device will appear in Device Manager)
