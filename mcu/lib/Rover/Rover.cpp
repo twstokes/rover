@@ -36,8 +36,6 @@ void Rover::initLeds(uint8_t n, uint8_t l)
 // and it could be stored in persistent memory see issue #1
 void Rover::initServos(uint8_t n, const uint8_t *p)
 {
-  Servo servos[n];
-
   for (int x = 0; x < n; x++)
   {
     servos[x].attach(p[x]);
