@@ -15,12 +15,14 @@ const uint8_t servoPins[SERVO_COUNT] = {2, 3, 4, 5};
 
 // initialize a rover
 // Rover r = Rover(SERVO_COUNT, servoPins, LED_COUNT, NEO_PIN);
-Rover r = Rover(SERVO_COUNT, servoPins);
+// Rover r = Rover(SERVO_COUNT, servoPins);
+Rover r = Rover();
 
 void setup()
 {
   Serial.setTimeout(100);
   Serial.begin(115200);
+  r.initServos(SERVO_COUNT, servoPins);
 }
 
 void loop()

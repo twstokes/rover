@@ -34,9 +34,9 @@ struct lightData
 class Rover
 {
 public:
-    Rover(uint8_t, const uint8_t *);
-    Rover(uint8_t, const uint8_t *, uint8_t, uint8_t);
-    ~Rover();
+    // Rover(uint8_t, const uint8_t *);
+    // Rover(uint8_t, const uint8_t *, uint8_t, uint8_t);
+    // ~Rover();
 
     processCode
         setServo(servoId, servoVal),
@@ -46,15 +46,15 @@ public:
 
     String getServoValues();
 
+    void
+        initLeds(uint8_t, uint8_t),
+        initServos(uint8_t, const uint8_t *);
+
 protected:
     uint8_t
         numServos,
         numLeds;
     Servo *servos;
     Adafruit_NeoPixel *strip;
-
-    void
-        initLeds(uint8_t, uint8_t),
-        initServos(uint8_t, const uint8_t *);
 };
 } // namespace rover
