@@ -36,8 +36,7 @@ void loop()
 
     processCode result = processPayload(buf);
 
-    if (WRITE_RESULT)
-      // warning: this is async until the buffer is full
+    if (WRITE_RESULT && Serial.availableForWrite() >= sizeof(result))
       Serial.println(result);
   }
 }
