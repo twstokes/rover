@@ -39,6 +39,8 @@ void loop()
       Serial.write(result);
   }
 
+  Serial.println(r.getServoValues());
+
   delay(10);
 }
 

@@ -44,6 +44,8 @@ public:
         setLight(ledId, ledColor),
         setLights(ledColor);
 
+    String getServoValues();
+
 protected:
     uint8_t
         numServos,

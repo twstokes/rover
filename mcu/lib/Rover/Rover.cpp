@@ -103,3 +103,19 @@ processCode Rover::setLights(ledColor c)
   strip->show();
   return Success;
 }
+
+String Rover::getServoValues()
+{
+  String outputString = "";
+
+  for (servoId id = 1; id <= numServos; id++)
+  {
+    outputString += "Servo ID: ";
+    outputString += id;
+    outputString += " set to ";
+    outputString += servos[id - 1].read();
+    outputString += "\n";
+  }
+
+  return outputString;
+}
