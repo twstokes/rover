@@ -6,6 +6,10 @@ Note: Though this has "Pro Micro" on the board, it's known as the Leonardo. The 
 
 ### Troubleshooting
 
+#### Serial output
+
+Reading the serial output from the MCU is as simple as `pio device monitor`
+
 #### How to reset the MCU:
 
 - Use the Arduino software and select Arduino Leonardo
