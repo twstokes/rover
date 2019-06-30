@@ -6,11 +6,6 @@ Note: Though this has "Pro Micro" on the board, it's known as the Leonardo. The 
 
 ### Troubleshooting
 
-During development, this board was temporarily bricked via a bad firmware upload.
-
-Cleaning out the PlatformIO directories before upload may have fixed our bricked firmware:
-`rm -r .pioenvs .piolibdeps`
-
 #### How to reset the MCU:
 
 - Use the Arduino software and select Arduino Leonardo
