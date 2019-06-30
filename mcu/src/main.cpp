@@ -35,13 +35,11 @@ void loop()
     Serial.readBytes(buf, PAYLOAD_SIZE);
 
     processCode result = processPayload(buf);
-    // write the result back over serial
-    // warning: the receiver must make sure this doesn't clog up the pipe
-    if (WRITE_RESULT)
-      Serial.write(result);
-  }
 
-  delay(10);
+    if (WRITE_RESULT)
+      // warning: this is async until the buffer is full
+      Serial.println(result);
+  }
 }
 
 // returns whether setting this new data was successful or not
