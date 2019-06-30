@@ -34,10 +34,6 @@ struct lightData
 class Rover
 {
 public:
-    // Rover(uint8_t, const uint8_t *);
-    // Rover(uint8_t, const uint8_t *, uint8_t, uint8_t);
-    // ~Rover();
-
     processCode
         setServo(servoId, servoVal),
         setServos(servoVal *),

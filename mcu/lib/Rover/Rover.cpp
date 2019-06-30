@@ -2,24 +2,6 @@
 
 using namespace rover;
 
-// // rover with no lights
-// Rover::Rover(uint8_t numServos, const uint8_t *servoPins) : numLeds(0)
-// {
-//   initServos(numServos, servoPins);
-// }
-
-// // rover with lights
-// Rover::Rover(uint8_t numServos, const uint8_t *servoPins, uint8_t numLeds, uint8_t ledPin)
-// {
-//   initLeds(numLeds, ledPin);
-//   initServos(numServos, servoPins);
-// }
-
-// // deconstructor
-// Rover::~Rover()
-// {
-// }
-
 void Rover::initLeds(uint8_t n, uint8_t l)
 {
   strip = new Adafruit_NeoPixel(n, l);
