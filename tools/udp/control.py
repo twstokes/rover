@@ -7,7 +7,7 @@ pygame.init()
 pygame.joystick.init()
 clock = pygame.time.Clock()
 
-UDP_IP = '192.168.1.141'
+UDP_IP = 'rover.tannerstokes.com'
 UDP_PORT = 8000
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -33,6 +33,7 @@ def writeVal(id, val):
 def writeSet(set):
 	values = [1] + set
 	sock.sendto(bytes(values), (UDP_IP, UDP_PORT))
+	print(set)
 
 def processAxis(axis, trim, limitLow, limitHigh, invert):
 	rawVal = _joystick.get_axis(axis)
@@ -121,12 +122,12 @@ while True:
 				throttleVal = processThrottle(5, 0, 0, 180, True)
 
 			# reverse
-			if event.axis == 4:
-				throttleVal = processThrottle(4, 0, 0, 180, False)
+			if event.axis == 2:
+				throttleVal = processThrottle(2, 0, 0, 180, False)
 
 			# cam pan
-			if event.axis == 2:
-				camPan = processAxis(2, 0, 50, 130, True)
+			if event.axis == 4:
+				camPan = processAxis(4, 0, 50, 130, True)
 			
 			# cam tilt
 			if event.axis == 3:
