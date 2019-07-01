@@ -38,6 +38,9 @@ void loop()
 
     if (WRITE_RESULT && Serial.availableForWrite() >= sizeof(result))
       Serial.println(result);
+    
+    if (Serial.availableForWrite()) 
+      Serial.println(r.getServoValues());
   }
 }
 
