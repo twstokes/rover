@@ -127,11 +127,11 @@ while True:
 
 			# cam pan
 			if event.axis == 4:
-				camPan = processAxis(4, 0, 50, 130, True)
+				camPan = processAxis(4, 0, 50, 130, False)
 			
 			# cam tilt
 			if event.axis == 3:
-				camTilt = processAxis(3, 30, 90, 150, False)
+				camTilt = processAxis(3, 0, 50, 150, True)
 		
 
 
