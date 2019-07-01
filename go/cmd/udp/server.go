@@ -42,11 +42,11 @@ func (u *udpServer) start(stopChan chan bool) {
 			// timeout for reading new data
 			u.udp.SetReadDeadline(time.Now().Add(time.Millisecond * 10))
 			// 24 bytes is arbitrary, current payloads are all < mcu.MaxPayload
-			buf := make([]byte, 24)
+			buf := make([]byte, 8)
 			n, _, err := u.udp.ReadFrom(buf)
 			if err != nil {
 				// may be a timeout
-				log.Print(err)
+				// log.Print(err)
 				continue
 			}
 
