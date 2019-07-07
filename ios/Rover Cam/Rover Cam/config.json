@@ -2,7 +2,7 @@
     "host": "rover.tannerstokes.com",
     "port": "8000",
     "camera": {
-        "mjpegUrl": "http://rover.tannerstokes.com:8000",
+        "mjpegUrl": "http://192.168.1.16:8000",
         "servos": []
     },
     "servos": [
