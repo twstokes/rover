@@ -3,14 +3,29 @@ import Foundation
 class Servo {
     private var trim = 0
     private(set) var value = 90
+    let min: Int
+    let max: Int
+    let inverted: Bool
+
+    init(min: Int = 0, max: Int = 180, inverted: Bool = false) {
+        self.min = min
+        self.max = max
+        self.inverted = inverted
+    }
 
     func setValue(_ degrees: Int) {
-        guard degrees >= 0 && degrees <= 180 else {
+        guard degrees >= min && degrees <= max else {
             print("Servo value out of range!")
             return
         }
 
-        value = (degrees + trim).clampedTo(min: 0, max: 180)
+        var newValue = (degrees + trim).clampedTo(min: min, max: max)
+
+        if inverted {
+            newValue = abs(180 - newValue)
+        }
+
+        value = newValue
     }
 
     func setTrim(from90: Int) {

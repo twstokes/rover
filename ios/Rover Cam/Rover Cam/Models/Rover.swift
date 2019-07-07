@@ -7,8 +7,8 @@ class Rover {
     private let client: UDPClient
     private var poller: Timer?
 
-    private let steering = Servo()
-    private let drivetrain = Servo()
+    private let steering = Servo(inverted: true)
+    private let drivetrain = Servo(inverted: true)
 
     private let camPan = Servo()
     private let camTilt = Servo()
