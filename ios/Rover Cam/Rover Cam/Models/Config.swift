@@ -10,11 +10,23 @@ struct RoverConfig: Decodable {
     let camera: CameraConfig
     let servos: [DrivetrainServo]
     let lights: [LightConfig]
+
+    var hasRearSteering: Bool {
+        return servos.contains { $0.type == .steeringRear }
+    }
 }
 
 struct CameraConfig: Decodable {
     let mjpegUrl: URL
     let servos: [CameraServo]
+
+    var canPan: Bool {
+        return servos.contains { $0.type == .pan }
+    }
+
+    var canTilt: Bool {
+        return servos.contains { $0.type == .tilt }
+    }
 }
 
 struct ServoConfig: Decodable {
@@ -27,6 +39,7 @@ struct ServoConfig: Decodable {
 struct LightConfig: Decodable {
     let id: Int
     let numLights: Int
+    let description: String
 }
 
 struct DrivetrainServo: Decodable {

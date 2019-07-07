@@ -37,7 +37,8 @@
     "lights": [
         {
             "id": 1,
-            "numLights": 8
+            "numLights": 8,
+            "description": "Light Bar"
         }
     ]
 }
