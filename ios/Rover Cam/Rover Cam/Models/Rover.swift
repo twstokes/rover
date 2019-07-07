@@ -2,9 +2,10 @@ import Foundation
 import UIKit
 
 class Rover {
+    private let config: RoverConfig
+
     private let client: UDPClient
     private var poller: Timer?
-    private let pollRate: TimeInterval
 
     private let steering = Servo()
     private let drivetrain = Servo()
@@ -26,9 +27,10 @@ class Rover {
         )
     }
 
-    init(host: String, port: String, pollRate: TimeInterval) {
-        client = UDPClient(host: host, port: port)
-        self.pollRate = pollRate
+    init(config: RoverConfig) {
+        self.config = config
+
+        client = UDPClient(host: config.host, port: config.port)
     }
 
     func startPolling() {
@@ -45,7 +47,7 @@ class Rover {
         // initial color of the UI
         setLightBar(to: getColorFromHueValue(0.5))
 
-        poller = Timer.scheduledTimer(withTimeInterval: pollRate, repeats: true) { _ in
+        poller = Timer.scheduledTimer(withTimeInterval: RoverConfig.pollRate, repeats: true) { _ in
             self.fetchNewValues()
 
             self.client.send(self.data)

@@ -1,0 +1,43 @@
+{
+    "host": "rover.tannerstokes.com",
+    "port": "8000",
+    "camera": {
+        "mjpegUrl": "http://rover.tannerstokes.com:8000",
+        "servos": []
+    },
+    "servos": [
+        {
+            "type": "forwardReverse",
+            "config": {
+                "id": 1,
+                "max": 120,
+                "min": 60,
+                "center": 90
+            }
+        },
+        {
+            "type": "steeringFront",
+            "config": {
+                "id": 2,
+                "max": 120,
+                "min": 60,
+                "center": 90
+            }
+        },
+        {
+            "type": "steeringRear",
+            "config": {
+                "id": 3,
+                "max": 120,
+                "min": 60,
+                "center": 90
+            }
+        }
+    ],
+    "lights": [
+        {
+            "id": 1,
+            "numLights": 8
+        }
+    ]
+}

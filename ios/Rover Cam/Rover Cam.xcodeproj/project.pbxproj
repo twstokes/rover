@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C31EE5002290F31900323A12 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31EE4FF2290F31900323A12 /* CGFloat.swift */; };
 		C335EDF422911A110091BF7C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335EDF322911A110091BF7C /* Color.swift */; };
+		C38BCB6C22D25F3E00D54947 /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = C38BCB6B22D25F3D00D54947 /* config.json */; };
 		C3CD7DEC228F765300B6A52A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7DEB228F765300B6A52A /* AppDelegate.swift */; };
 		C3CD7DEE228F765300B6A52A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7DED228F765300B6A52A /* MainViewController.swift */; };
 		C3CD7DF1228F765300B6A52A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3CD7DEF228F765300B6A52A /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		C31EE4FF2290F31900323A12 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
 		C335EDF322911A110091BF7C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		C38BCB6B22D25F3D00D54947 /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		C3CD7DE8228F765300B6A52A /* Rover Cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rover Cam.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3CD7DEB228F765300B6A52A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3CD7DED228F765300B6A52A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				C3CD7DEB228F765300B6A52A /* AppDelegate.swift */,
 				C3CD7E0E228F79E600B6A52A /* Views */,
 				C3CD7DEF228F765300B6A52A /* Main.storyboard */,
+				C38BCB6B22D25F3D00D54947 /* config.json */,
 				C3CD7DF2228F765400B6A52A /* Assets.xcassets */,
 				C3CD7DF4228F765400B6A52A /* LaunchScreen.storyboard */,
 				C3CD7DF7228F765400B6A52A /* Info.plist */,
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3CD7DF6228F765400B6A52A /* LaunchScreen.storyboard in Resources */,
+				C38BCB6C22D25F3E00D54947 /* config.json in Resources */,
 				C3CD7DF3228F765400B6A52A /* Assets.xcassets in Resources */,
 				C3CD7DF1228F765300B6A52A /* Main.storyboard in Resources */,
 			);

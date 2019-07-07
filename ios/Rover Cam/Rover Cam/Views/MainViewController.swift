@@ -15,7 +15,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var colorSlider: UISlider!
 
     var rover: Rover?
-    let attitude = AttitudeProcessor(updateInterval: Config.pollRate)
+    let attitude = AttitudeProcessor(updateInterval: RoverConfig.pollRate)
 
     var powerOn = false {
         didSet {
@@ -48,16 +48,14 @@ class MainViewController: UIViewController {
     }
 
     func startRover() {
-        let rover = Rover(
-            host: Config.host,
-            port: Config.port,
-            pollRate: Config.pollRate
-        )
+        let config = loadConfig()
+
+        let rover = Rover(config: config)
 
         rover.cameraDelegate = attitude
         rover.subscriber = self
 
-        webView.load(URLRequest(url: Config.mjpegFeed))
+        webView.load(URLRequest(url: config.camera.mjpegUrl))
         webView.isHidden = false
         attitude.start()
         rover.startPolling()
