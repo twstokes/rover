@@ -106,7 +106,8 @@ class MainViewController: UIViewController {
 extension MainViewController: RoverSubscriber {
     func receivedLatest(_ roverData: RoverData) {
         steering.text = roverData.controls.steering.description + "°"
-        drivetrain.text = ((90 - roverData.controls.drivetrain) / 90 * 100).description + "%"
+
+        drivetrain.text = (Int((Float(roverData.controls.drivetrain) - 90) / 90 * 100)).description + "%"
 
         cameraPan.text = roverData.camera.pan.description + "°"
         cameraTilt.text = roverData.camera.tilt.description + "°"
