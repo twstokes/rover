@@ -90,7 +90,7 @@ class Rover {
     }
 
     func setLightBar(to color: UIColor) {
-        let lightBar = Light(id: 1, mode: 1, color: color)
+        let lightBar = Light(color: color)
         client.send(lightBar)
     }
 }
