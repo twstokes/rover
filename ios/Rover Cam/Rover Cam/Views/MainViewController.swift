@@ -52,7 +52,11 @@ class MainViewController: UIViewController {
 
         let rover = Rover(config: config)
 
-        rover.cameraDelegate = attitude
+        if config.camera.canPan && config.camera.canTilt {
+            // only set this delegate if we have pan and tilt servos
+            rover.cameraDelegate = attitude
+        }
+
         rover.subscriber = self
 
         webView.load(URLRequest(url: config.camera.mjpegUrl))
