@@ -26,6 +26,7 @@
 		C3CD7E2322906D5800B6A52A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E2222906D5800B6A52A /* Config.swift */; };
 		C3CD7E252290CC6000B6A52A /* Light.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E242290CC6000B6A52A /* Light.swift */; };
 		C3CD7E272290CE3D00B6A52A /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E262290CE3D00B6A52A /* UIColor.swift */; };
+		C3D4F8FE22D29F8F00AEE53E /* JoystickProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4F8FD22D29F8F00AEE53E /* JoystickProcessor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		C3CD7E2222906D5800B6A52A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		C3CD7E242290CC6000B6A52A /* Light.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Light.swift; sourceTree = "<group>"; };
 		C3CD7E262290CE3D00B6A52A /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		C3D4F8FD22D29F8F00AEE53E /* JoystickProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoystickProcessor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				C3CD7E1D228FC72C00B6A52A /* AttitudeProcessor.swift */,
+				C3D4F8FD22D29F8F00AEE53E /* JoystickProcessor.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				C31EE5002290F31900323A12 /* CGFloat.swift in Sources */,
 				C3CD7DEC228F765300B6A52A /* AppDelegate.swift in Sources */,
 				C3CD7E1E228FC72C00B6A52A /* AttitudeProcessor.swift in Sources */,
+				C3D4F8FE22D29F8F00AEE53E /* JoystickProcessor.swift in Sources */,
 				C3CD7E21229060AC00B6A52A /* Math.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

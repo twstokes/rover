@@ -16,6 +16,7 @@ class MainViewController: UIViewController {
 
     var rover: Rover?
     let attitude = AttitudeProcessor(updateInterval: RoverConfig.pollRate)
+    let joystick = JoystickProcessor()
 
     var powerOn = false {
         didSet {
@@ -49,13 +50,14 @@ class MainViewController: UIViewController {
 
     func startRover() {
         let config = loadConfig()
-
         let rover = Rover(config: config)
 
         if config.camera.canPan && config.camera.canTilt {
             // only set this delegate if we have pan and tilt servos
             rover.cameraDelegate = attitude
         }
+
+        rover.controlDelegate = joystick
 
         rover.subscriber = self
 
