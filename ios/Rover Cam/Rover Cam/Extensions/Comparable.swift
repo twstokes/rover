@@ -1,11 +1,11 @@
 import Foundation
-import UIKit
 
-extension CGFloat {
-    func clampedTo(min: CGFloat, max: CGFloat) -> CGFloat {
+extension Comparable {
+    func clampedTo(min: Self, max: Self) ->  Self {
         if self < min { return min }
         if self > max { return max }
 
         return self
     }
 }
+
