@@ -39,10 +39,10 @@ class Servo {
 
         // apply trim
         var newValue = value + trim
-        // clamp to min and max
-        newValue = newValue.clampedTo(range: allowedRange)
         // map to min and max
         newValue = newValue.mapped(from: Servo.defaultRange, to: allowedRange)
+        // clamp to min and max
+        newValue = newValue.clampedTo(range: allowedRange)
         // handle inversion
         if inverted {
             newValue *= -1

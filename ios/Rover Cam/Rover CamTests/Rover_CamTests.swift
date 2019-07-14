@@ -95,13 +95,13 @@ class Rover_CamTests: XCTestCase {
         let servo = Servo(min: -0.5, max: 0.5, trim: 0, inverted: false)
 
         servo.setValue(-1)
-        XCTAssertEqual(servo.value, -0.25)
+        XCTAssertEqual(servo.value, -0.5)
         servo.setValue(1)
-        XCTAssertEqual(servo.value, 0.25)
+        XCTAssertEqual(servo.value, 0.5)
 
         // crank the trim all the way to the right
         servo.setTrim(1)
-        XCTAssertEqual(servo.value, 0.25)
+        XCTAssertEqual(servo.value, 0.5)
     }
 
     func testInversion() {
@@ -120,10 +120,14 @@ class Rover_CamTests: XCTestCase {
 
         // test far left
         servo.setValue(-1)
-        XCTAssertEqual(servo.valueInDegrees, 67)
+        XCTAssertEqual(servo.valueInDegrees, 45)
 
         // test far right
         servo.setValue(1)
+        XCTAssertEqual(servo.valueInDegrees, 135)
+
+        // test in between
+        servo.setValue(0.5)
         XCTAssertEqual(servo.valueInDegrees, 112)
 
         // default servo
