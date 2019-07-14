@@ -25,26 +25,12 @@ class JoystickProcessor {
 }
 
 extension JoystickProcessor: RoverControlDelegate {
-    func getSteeringValue() -> Int? {
-        if let value = controller?.extendedGamepad?.leftThumbstick.xAxis.value {
-            return Int(value * 90) + 90
-        }
-
-        return nil
+    func getSteeringValue() -> Float? {
+        return controller?.extendedGamepad?.leftThumbstick.xAxis.value
     }
 
-    func getDrivetrainValue() -> Int? {
-        if
-            let lValue = controller?.extendedGamepad?.leftTrigger.value,
-            let rValue = controller?.extendedGamepad?.rightTrigger.value
-        {
-
-            let sumDegrees = Int((-1 * lValue + rValue) * 90) + 90
-            return sumDegrees
-        }
-
-        return nil
+    func getDrivetrainValue() -> Float? {
+        guard let gamepad = controller?.extendedGamepad else { return nil }
+        return -gamepad.leftTrigger.value + gamepad.rightTrigger.value
     }
-
-
 }

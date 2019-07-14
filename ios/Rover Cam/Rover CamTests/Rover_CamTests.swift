@@ -27,53 +27,67 @@ class Rover_CamTests: XCTestCase {
         // start at zero
         servo.setValue(0)
         XCTAssertEqual(servo.value, 0)
+        XCTAssertEqual(servo.valueInDegrees, 90)
 
         // try to set a value out of range
-        servo.setValue(-1)
+        servo.setValue(-1.1)
         XCTAssertEqual(servo.value, 0)
+        XCTAssertEqual(servo.valueInDegrees, 90)
 
-        servo.setValue(181)
+        servo.setValue(1.1)
         XCTAssertEqual(servo.value, 0)
+        XCTAssertEqual(servo.valueInDegrees, 90)
 
         // try to set a valid value
-        servo.setValue(85)
-        XCTAssertEqual(servo.value, 85)
+        servo.setValue(0.5)
+        XCTAssertEqual(servo.value, 0.5)
+        XCTAssertEqual(servo.valueInDegrees, 135)
 
-        servo.setValue(15)
-        XCTAssertEqual(servo.value, 15)
+        servo.setValue(1)
+        XCTAssertEqual(servo.value, 1)
+        XCTAssertEqual(servo.valueInDegrees, 180)
 
-        // set back to middle
-        servo.setTrim(from90: 0)
-        servo.setValue(90)
+        // set trim
+        servo.setTrim(0.5)
+        servo.setValue(0)
+        XCTAssertEqual(servo.value, 0.5)
+        XCTAssertEqual(servo.valueInDegrees, 135)
 
         // trim all the way left
-        servo.setTrim(from90: -90)
-        XCTAssertEqual(servo.value, 0)
+        servo.setTrim(-1)
+        XCTAssertEqual(servo.value, -1)
+        XCTAssertEqual(servo.valueInDegrees, 0)
 
-        // set back to middle
-        servo.setTrim(from90: 0)
-        servo.setValue(90)
+        // test trim and value
+        servo.setTrim(0.5)
+        servo.setValue(0.5)
+        XCTAssertEqual(servo.value, 1)
+        XCTAssertEqual(servo.valueInDegrees, 180)
 
-        // trim all the way right
-        servo.setTrim(from90: 90)
-        XCTAssertEqual(servo.value, 180)
+        // test exceeding value
+        servo.setValue(1)
+        XCTAssertEqual(servo.value, 1)
+        XCTAssertEqual(servo.valueInDegrees, 180)
+    }
 
-        // centered position with high trim
-        servo.setValue(90)
-        XCTAssertEqual(servo.value, 180)
+    func testMinMax() {
+        // test that values are clamped to our min and max
+        let servo = Servo(min: -0.5, max: 0.5, trim: 0, inverted: false)
 
-        // set back to middle
-        servo.setTrim(from90: 0)
-        servo.setValue(90)
+        servo.setValue(-1)
+        XCTAssertEqual(servo.value, -0.5)
+        servo.setValue(1)
+        XCTAssertEqual(servo.value, 0.5)
 
-        // set a value higher than what's possible
-        servo.setValue(190)
-        XCTAssertEqual(servo.value, 90)
+        // crank the trim all the way to the right
+        servo.setTrim(1)
+        XCTAssertEqual(servo.value, 0.5)
+    }
 
-        // set a trim that's out of range
-        servo.setValue(90)
-        servo.setTrim(from90: 0)
-        servo.setTrim(from90: 91)
-        XCTAssertEqual(servo.value, 90)
+    func testInversion() {
+        let servo = Servo(inverted: true)
+
+        servo.setValue(1)
+        XCTAssertEqual(servo.value, -1)
     }
 }

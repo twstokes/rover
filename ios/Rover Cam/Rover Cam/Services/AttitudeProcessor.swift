@@ -23,24 +23,37 @@ class AttitudeProcessor {
 }
 
 extension AttitudeProcessor: RoverCameraDelegate {
-    func getPanValue() -> Int? {
-        guard let yaw = motion.deviceMotion?.attitude.yaw else {
+    // returns a float from -1 to 1 for half of the axis (π/2 to -π/2)
+    func getPanValue() -> Float? {
+        let limit = Double.pi / 2
+        let validRange = (-limit ... limit)
+
+        guard
+            let yaw = motion.deviceMotion?.attitude.yaw,
+            validRange.contains(yaw)
+        else {
             return nil
         }
 
-        // center at 90
-        let deg = radToDeg(rad: yaw) + 90
-        return Int(deg)
+        return -Float(yaw / limit)
     }
 
-    func getTiltValue() -> Int? {
-        // this is roll because we're in a landscape orientation
+    // returns a float from -1 to 1 for half of the axis (0 to π)
+    // this is roll because we're in a landscape orientation
+    func getTiltValue() -> Float? {
+        let limit = Double.pi / 2
+        let validRange = (-limit ... limit)
+
         guard let pitch = motion.deviceMotion?.attitude.roll else {
             return nil
         }
 
-        let deg = radToDeg(rad: pitch)
-        // invert the axis
-        return Int(180 - deg)
+        // shift to make math easier and match up with pi / 2
+        let shiftedPitch = pitch + limit
+        guard validRange.contains(shiftedPitch) else {
+            return nil
+        }
+
+        return -Float(shiftedPitch / limit)
     }
 }

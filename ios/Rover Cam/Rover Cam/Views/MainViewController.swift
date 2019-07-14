@@ -58,7 +58,6 @@ class MainViewController: UIViewController {
         }
 
         rover.controlDelegate = joystick
-
         rover.subscriber = self
 
         webView.load(URLRequest(url: config.camera.mjpegUrl))
@@ -80,6 +79,7 @@ class MainViewController: UIViewController {
         webView.isHidden = true
         attitude.stop()
         rover?.stopPolling()
+        
         rover = nil
 
         UIView.animate(withDuration: 0.5) {
@@ -106,7 +106,6 @@ class MainViewController: UIViewController {
 extension MainViewController: RoverSubscriber {
     func receivedLatest(_ roverData: RoverData) {
         steering.text = roverData.controls.steering.description + "°"
-
         drivetrain.text = (Int((Float(roverData.controls.drivetrain) - 90) / 90 * 100)).description + "%"
 
         cameraPan.text = roverData.camera.pan.description + "°"

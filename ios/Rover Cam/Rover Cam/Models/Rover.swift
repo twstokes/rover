@@ -22,8 +22,8 @@ class Rover {
 
     private var data: RoverData {
         return RoverData(
-            controls: (drivetrain.value, steering.value),
-            camera: (camPan.value, camTilt.value)
+            controls: (drivetrain.valueInDegrees, steering.valueInDegrees),
+            camera: (camPan.valueInDegrees, camTilt.valueInDegrees)
         )
     }
 
@@ -101,13 +101,19 @@ struct RoverData {
 }
 
 protocol RoverControlDelegate {
-    func getSteeringValue() -> Int?
-    func getDrivetrainValue() -> Int?
+    // functions should return values -1.0 to 1.0
+    // left should be the negative value
+    func getSteeringValue() -> Float?
+    // reverse should be the negative value
+    func getDrivetrainValue() -> Float?
 }
 
 protocol RoverCameraDelegate {
-    func getPanValue() -> Int?
-    func getTiltValue() -> Int?
+    // functions should return values -1.0 to 1.0
+    // left should be the negative value
+    func getPanValue() -> Float?
+    // down should be the negative value
+    func getTiltValue() -> Float?
 }
 
 protocol RoverSubscriber {

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C31EE5002290F31900323A12 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31EE4FF2290F31900323A12 /* CGFloat.swift */; };
 		C335EDF422911A110091BF7C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335EDF322911A110091BF7C /* Color.swift */; };
 		C38BCB6C22D25F3E00D54947 /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = C38BCB6B22D25F3D00D54947 /* config.json */; };
 		C3CD7DEC228F765300B6A52A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7DEB228F765300B6A52A /* AppDelegate.swift */; };
@@ -19,10 +18,9 @@
 		C3CD7E0D228F799900B6A52A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3CD7E0C228F799900B6A52A /* WebKit.framework */; };
 		C3CD7E12228F7A2700B6A52A /* UDPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E11228F7A2700B6A52A /* UDPClient.swift */; };
 		C3CD7E15228F7F2700B6A52A /* Rover.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E14228F7F2700B6A52A /* Rover.swift */; };
-		C3CD7E18228F83C900B6A52A /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E17228F83C900B6A52A /* Int.swift */; };
+		C3CD7E18228F83C900B6A52A /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E17228F83C900B6A52A /* Comparable.swift */; };
 		C3CD7E1A228FB44400B6A52A /* Servo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E19228FB44400B6A52A /* Servo.swift */; };
 		C3CD7E1E228FC72C00B6A52A /* AttitudeProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E1D228FC72C00B6A52A /* AttitudeProcessor.swift */; };
-		C3CD7E21229060AC00B6A52A /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E20229060AC00B6A52A /* Math.swift */; };
 		C3CD7E2322906D5800B6A52A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E2222906D5800B6A52A /* Config.swift */; };
 		C3CD7E252290CC6000B6A52A /* Light.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E242290CC6000B6A52A /* Light.swift */; };
 		C3CD7E272290CE3D00B6A52A /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7E262290CE3D00B6A52A /* UIColor.swift */; };
@@ -40,7 +38,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C31EE4FF2290F31900323A12 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
 		C335EDF322911A110091BF7C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		C38BCB6B22D25F3D00D54947 /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		C3CD7DE8228F765300B6A52A /* Rover Cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rover Cam.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,10 +53,9 @@
 		C3CD7E0C228F799900B6A52A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C3CD7E11228F7A2700B6A52A /* UDPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPClient.swift; sourceTree = "<group>"; };
 		C3CD7E14228F7F2700B6A52A /* Rover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rover.swift; sourceTree = "<group>"; };
-		C3CD7E17228F83C900B6A52A /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		C3CD7E17228F83C900B6A52A /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
 		C3CD7E19228FB44400B6A52A /* Servo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Servo.swift; sourceTree = "<group>"; };
 		C3CD7E1D228FC72C00B6A52A /* AttitudeProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttitudeProcessor.swift; sourceTree = "<group>"; };
-		C3CD7E20229060AC00B6A52A /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		C3CD7E2222906D5800B6A52A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		C3CD7E242290CC6000B6A52A /* Light.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Light.swift; sourceTree = "<group>"; };
 		C3CD7E262290CE3D00B6A52A /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -171,8 +167,7 @@
 		C3CD7E16228F83B700B6A52A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C3CD7E17228F83C900B6A52A /* Int.swift */,
-				C31EE4FF2290F31900323A12 /* CGFloat.swift */,
+				C3CD7E17228F83C900B6A52A /* Comparable.swift */,
 				C3CD7E262290CE3D00B6A52A /* UIColor.swift */,
 			);
 			path = Extensions;
@@ -181,7 +176,6 @@
 		C3CD7E1F2290609C00B6A52A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				C3CD7E20229060AC00B6A52A /* Math.swift */,
 				C335EDF322911A110091BF7C /* Color.swift */,
 			);
 			path = Helpers;
@@ -294,15 +288,13 @@
 				C3CD7E252290CC6000B6A52A /* Light.swift in Sources */,
 				C3CD7E2322906D5800B6A52A /* Config.swift in Sources */,
 				C335EDF422911A110091BF7C /* Color.swift in Sources */,
-				C3CD7E18228F83C900B6A52A /* Int.swift in Sources */,
+				C3CD7E18228F83C900B6A52A /* Comparable.swift in Sources */,
 				C3CD7E1A228FB44400B6A52A /* Servo.swift in Sources */,
 				C3CD7DEE228F765300B6A52A /* MainViewController.swift in Sources */,
 				C3CD7E272290CE3D00B6A52A /* UIColor.swift in Sources */,
-				C31EE5002290F31900323A12 /* CGFloat.swift in Sources */,
 				C3CD7DEC228F765300B6A52A /* AppDelegate.swift in Sources */,
 				C3CD7E1E228FC72C00B6A52A /* AttitudeProcessor.swift in Sources */,
 				C3D4F8FE22D29F8F00AEE53E /* JoystickProcessor.swift in Sources */,
-				C3CD7E21229060AC00B6A52A /* Math.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
