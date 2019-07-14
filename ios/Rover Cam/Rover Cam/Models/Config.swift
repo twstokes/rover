@@ -31,9 +31,10 @@ struct CameraConfig: Decodable {
 
 struct ServoConfig: Decodable {
     let id: Int
-    let min: Int
-    let max: Int
-    let center: Int
+    let min: Float
+    let max: Float
+    let trim: Float
+    let inverted: Bool
 }
 
 struct LightConfig: Decodable {

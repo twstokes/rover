@@ -7,11 +7,12 @@ class Rover {
     private let client: UDPClient
     private var poller: Timer?
 
-    private let steering = Servo(inverted: true)
-    private let drivetrain = Servo(inverted: true)
+    private var frontSteering: Servo?
+    private var rearSteering: Servo?
+    private var drivetrain: Servo?
 
-    private let camPan = Servo()
-    private let camTilt = Servo()
+    private var camPan: Servo?
+    private var camTilt: Servo?
 
     private(set) var isRunning = false
 
@@ -22,8 +23,8 @@ class Rover {
 
     private var data: RoverData {
         return RoverData(
-            controls: (drivetrain.valueInDegrees, steering.valueInDegrees),
-            camera: (camPan.valueInDegrees, camTilt.valueInDegrees)
+            controls: (drivetrain?.valueInDegrees ?? 90, frontSteering?.valueInDegrees ?? 90),
+            camera: (camPan?.valueInDegrees ?? 90, camTilt?.valueInDegrees ?? 90)
         )
     }
 
@@ -31,6 +32,26 @@ class Rover {
         self.config = config
 
         client = UDPClient(host: config.host, port: config.port)
+
+        for servo in config.servos {
+            switch servo.type {
+            case .forwardReverse:
+                drivetrain = Servo(with: servo.config)
+            case .steeringFront:
+                frontSteering = Servo(with: servo.config)
+            case .steeringRear:
+                rearSteering = Servo(with: servo.config)
+            }
+        }
+
+        for servo in config.camera.servos {
+            switch servo.type {
+            case .pan:
+                camPan = Servo(with: servo.config)
+            case .tilt:
+                camTilt = Servo(with: servo.config)
+            }
+        }
     }
 
     func startPolling() {
@@ -58,21 +79,21 @@ class Rover {
     private func fetchNewValues() {
         if let controlDelegate = self.controlDelegate {
             if let steering = controlDelegate.getSteeringValue() {
-                self.steering.setValue(steering)
+                self.frontSteering?.setValue(steering)
             }
 
             if let drivetrain = controlDelegate.getDrivetrainValue() {
-                self.drivetrain.setValue(drivetrain)
+                self.drivetrain?.setValue(drivetrain)
             }
         }
 
         if let cameraDelegate = self.cameraDelegate {
             if let pan = cameraDelegate.getPanValue() {
-                self.camPan.setValue(pan)
+                self.camPan?.setValue(pan)
             }
 
             if let tilt = cameraDelegate.getTiltValue() {
-                self.camTilt.setValue(tilt)
+                self.camTilt?.setValue(tilt)
             }
         }
     }

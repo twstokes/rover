@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C328F96422DBDDB900D229F2 /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = C328F96322DBDDB900D229F2 /* Float.swift */; };
 		C335EDF422911A110091BF7C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335EDF322911A110091BF7C /* Color.swift */; };
 		C38BCB6C22D25F3E00D54947 /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = C38BCB6B22D25F3D00D54947 /* config.json */; };
 		C3CD7DEC228F765300B6A52A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CD7DEB228F765300B6A52A /* AppDelegate.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C328F96322DBDDB900D229F2 /* Float.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
 		C335EDF322911A110091BF7C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		C38BCB6B22D25F3D00D54947 /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		C3CD7DE8228F765300B6A52A /* Rover Cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rover Cam.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				C3CD7E17228F83C900B6A52A /* Comparable.swift */,
+				C328F96322DBDDB900D229F2 /* Float.swift */,
 				C3CD7E262290CE3D00B6A52A /* UIColor.swift */,
 			);
 			path = Extensions;
@@ -292,6 +295,7 @@
 				C3CD7E1A228FB44400B6A52A /* Servo.swift in Sources */,
 				C3CD7DEE228F765300B6A52A /* MainViewController.swift in Sources */,
 				C3CD7E272290CE3D00B6A52A /* UIColor.swift in Sources */,
+				C328F96422DBDDB900D229F2 /* Float.swift in Sources */,
 				C3CD7DEC228F765300B6A52A /* AppDelegate.swift in Sources */,
 				C3CD7E1E228FC72C00B6A52A /* AttitudeProcessor.swift in Sources */,
 				C3D4F8FE22D29F8F00AEE53E /* JoystickProcessor.swift in Sources */,

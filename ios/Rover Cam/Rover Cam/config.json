@@ -10,27 +10,30 @@
             "type": "forwardReverse",
             "config": {
                 "id": 1,
-                "max": 120,
-                "min": 60,
-                "center": 90
+                "max": 1,
+                "min": -1,
+                "trim": 0,
+                "inverted": true
             }
         },
         {
             "type": "steeringFront",
             "config": {
                 "id": 2,
-                "max": 120,
-                "min": 60,
-                "center": 90
+                "max": 1,
+                "min": -1,
+                "trim": 0,
+                "inverted": true
             }
         },
         {
             "type": "steeringRear",
             "config": {
                 "id": 3,
-                "max": 120,
-                "min": 60,
-                "center": 90
+                "max": 1,
+                "min": -1,
+                "trim": 0,
+                "inverted": true
             }
         }
     ],
