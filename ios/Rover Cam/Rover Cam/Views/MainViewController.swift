@@ -7,6 +7,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var steering: UILabel!
     @IBOutlet weak var drivetrain: UILabel!
 
+    @IBOutlet weak var cameraStack: UIStackView!
     @IBOutlet weak var cameraPan: UILabel!
     @IBOutlet weak var cameraTilt: UILabel!
 
@@ -15,7 +16,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var colorSlider: UISlider!
 
     var rover: Rover?
-    let attitude = AttitudeProcessor(updateInterval: RoverConfig.pollRate)
+    var attitude: AttitudeProcessor?
     let joystick = JoystickProcessor()
 
     var powerOn = false {
@@ -52,9 +53,18 @@ class MainViewController: UIViewController {
         let config = loadConfig()
         let rover = Rover(config: config)
 
-        if config.camera.canPan && config.camera.canTilt {
+        if rover.canPanTiltCamera {
+            attitude = AttitudeProcessor(updateInterval: config.pollRate)
             // only set this delegate if we have pan and tilt servos
             rover.cameraDelegate = attitude
+            attitude?.start()
+        } else {
+            cameraStack.isHidden = true
+        }
+
+        if !rover.hasLights {
+            colorView.isHidden = true
+            colorSlider.isHidden = true
         }
 
         rover.controlDelegate = joystick
@@ -62,7 +72,7 @@ class MainViewController: UIViewController {
 
         webView.load(URLRequest(url: config.camera.mjpegUrl))
         webView.isHidden = false
-        attitude.start()
+
         rover.startPolling()
 
         self.rover = rover
@@ -77,7 +87,7 @@ class MainViewController: UIViewController {
         // prevent a reload flicker when toggling back on
         webView.load(URLRequest(url: URL(string: "about:blank")!))
         webView.isHidden = true
-        attitude.stop()
+        attitude?.stop()
         rover?.stopPolling()
         
         rover = nil
@@ -104,11 +114,21 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: RoverSubscriber {
-    func receivedLatest(_ roverData: RoverData) {
-        steering.text = roverData.controls.steering.description + "°"
-        drivetrain.text = (Int((Float(roverData.controls.drivetrain) - 90) / 90 * 100)).description + "%"
+    func received(_ roverData: RoverData) {
+        if let frontSteering = roverData.controls.frontSteering?.valueInDegrees {
+            self.steering.text = frontSteering.description + "°"
+        }
 
-        cameraPan.text = roverData.camera.pan.description + "°"
-        cameraTilt.text = roverData.camera.tilt.description + "°"
+        if let drivetrain = roverData.controls.drivetrain?.valueInDegrees {
+            self.drivetrain.text = (Int((Float(drivetrain) - 90) / 90 * 100)).description + "%"
+        }
+
+        if let camPan = roverData.camera.pan?.valueInDegrees {
+            self.cameraPan.text = camPan.description + "°"
+        }
+
+        if let camTilt = roverData.camera.tilt?.valueInDegrees {
+            self.cameraTilt.text = camTilt.description + "°"
+        }
     }
 }

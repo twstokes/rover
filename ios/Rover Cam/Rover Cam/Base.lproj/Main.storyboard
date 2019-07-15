@@ -76,7 +76,7 @@
                                                 <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="QAk-nW-jpa">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="QAk-nW-jpa">
                                                 <rect key="frame" x="0.0" y="37" width="88" height="41"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="l6W-X4-s0V" userLabel="Pan">
@@ -126,7 +126,7 @@
                                                 <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="waO-f1-vck" userLabel="Controls">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="waO-f1-vck" userLabel="Controls">
                                                 <rect key="frame" x="0.0" y="37" width="168" height="41"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="8x0-DO-AEh" userLabel="Steering">
@@ -205,6 +205,7 @@
                     </view>
                     <connections>
                         <outlet property="cameraPan" destination="fR1-oy-PHe" id="3X3-9o-GCc"/>
+                        <outlet property="cameraStack" destination="Suu-TV-xMQ" id="A4L-49-6A7"/>
                         <outlet property="cameraTilt" destination="K8Q-qJ-44p" id="j6t-x5-m3o"/>
                         <outlet property="colorSlider" destination="Nbi-Ec-MFV" id="qxt-Hg-SOT"/>
                         <outlet property="colorView" destination="gyB-lU-eQ7" id="MRc-J3-IPv"/>

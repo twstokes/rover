@@ -2,18 +2,17 @@ import Foundation
 
 
 struct RoverConfig: Decodable {
-    static let pollRate: TimeInterval = 1/60
+    var pollRate: TimeInterval {
+        return 1 / pollHz
+    }
     
     let host: String
     let port: String
+    private let pollHz: Double
     
     let camera: CameraConfig
     let servos: [DrivetrainServo]
     let lights: [LightConfig]
-
-    var hasRearSteering: Bool {
-        return servos.contains { $0.type == .steeringRear }
-    }
 }
 
 struct CameraConfig: Decodable {

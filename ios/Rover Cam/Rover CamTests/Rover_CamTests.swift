@@ -31,7 +31,7 @@ class Rover_CamTests: XCTestCase {
     }
 
     func testServo() {
-        let servo = Servo()
+        let servo = Servo(id: 0)
 
         // start at zero
         servo.setValue(0)
@@ -79,20 +79,20 @@ class Rover_CamTests: XCTestCase {
         XCTAssertEqual(servo.valueInDegrees, 180)
 
         // test initializing with a trim that exceeds allowable values
-        let servo2 = Servo(min: -0.5, max: 0.5, trim: 0.6)
+        let servo2 = Servo(id: 0, min: -0.5, max: 0.5, trim: 0.6)
         servo2.setValue(0)
         // the trim has no effect
         XCTAssertEqual(servo2.value, 0)
 
         // test initializing with a min and max that exceed servo values
-        let servo3 = Servo(min: -2, max: 2)
+        let servo3 = Servo(id: 0, min: -2, max: 2)
         servo3.setValue(-1)
         XCTAssertEqual(servo3.value, -1)
     }
 
     func testMinMax() {
         // test that values are clamped and normalized to our min and max
-        let servo = Servo(min: -0.5, max: 0.5, trim: 0, inverted: false)
+        let servo = Servo(id: 0, min: -0.5, max: 0.5, trim: 0, inverted: false)
 
         servo.setValue(-1)
         XCTAssertEqual(servo.value, -0.5)
@@ -105,14 +105,14 @@ class Rover_CamTests: XCTestCase {
     }
 
     func testInversion() {
-        let servo = Servo(inverted: true)
+        let servo = Servo(id: 0, inverted: true)
 
         servo.setValue(1)
         XCTAssertEqual(servo.value, -1)
     }
 
     func testControls() {
-        let servo = Servo(min: -0.5, max: 0.5, trim: 0)
+        let servo = Servo(id: 0, min: -0.5, max: 0.5, trim: 0)
 
         // test middle position
         servo.setValue(0)
@@ -131,7 +131,7 @@ class Rover_CamTests: XCTestCase {
         XCTAssertEqual(servo.valueInDegrees, 112)
 
         // default servo
-        let servo2 = Servo()
+        let servo2 = Servo(id: 0)
 
         // test middle position
         servo2.setValue(0)

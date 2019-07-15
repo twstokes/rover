@@ -3,7 +3,6 @@ import UIKit
 
 class Rover {
     private let config: RoverConfig
-
     private let client: UDPClient
     private var poller: Timer?
 
@@ -21,18 +20,28 @@ class Rover {
 
     var subscriber: RoverSubscriber?
 
-    private var data: RoverData {
-        return RoverData(
-            controls: (drivetrain?.valueInDegrees ?? 90, frontSteering?.valueInDegrees ?? 90),
-            camera: (camPan?.valueInDegrees ?? 90, camTilt?.valueInDegrees ?? 90)
-        )
+    private var steeringMode: RoverSteeringMode = .front
+
+    var hasLights: Bool {
+        return config.lights.count > 0
     }
+
+    var hasRearSteering: Bool {
+        return config.servos.contains { $0.type == .steeringRear }
+    }
+
+    var canPanTiltCamera: Bool {
+        return config.camera.canPan && config.camera.canTilt
+    }
+
 
     init(config: RoverConfig) {
         self.config = config
-
         client = UDPClient(host: config.host, port: config.port)
+        initServos()
+    }
 
+    private func initServos() {
         for servo in config.servos {
             switch servo.type {
             case .forwardReverse:
@@ -68,34 +77,52 @@ class Rover {
         // initial color of the UI
         setLightBar(to: getColorFromHueValue(0.5))
 
-        poller = Timer.scheduledTimer(withTimeInterval: RoverConfig.pollRate, repeats: true) { _ in
-            self.fetchNewValues()
-
-            self.client.send(self.data)
-            self.subscriber?.receivedLatest(self.data)
+        poller = Timer.scheduledTimer(withTimeInterval: config.pollRate, repeats: true) { _ in
+            let latestData = self.fetchNewValues()
+            self.client.send(latestData)
+            self.subscriber?.received(latestData)
         }
     }
 
-    private func fetchNewValues() {
-        if let controlDelegate = self.controlDelegate {
-            if let steering = controlDelegate.getSteeringValue() {
-                self.frontSteering?.setValue(steering)
+    private func fetchNewValues() -> RoverData {
+        if let steering = controlDelegate?.getSteeringValue() {
+            let frontValue: Float
+            let rearValue: Float
+
+            switch steeringMode {
+            case .front:
+                frontValue = steering
+                rearValue = 0
+            case .frontAndRear:
+                frontValue = steering
+                rearValue = steering
+            case .rear:
+                frontValue = 0
+                rearValue = steering
             }
 
-            if let drivetrain = controlDelegate.getDrivetrainValue() {
-                self.drivetrain?.setValue(drivetrain)
-            }
+            self.frontSteering?.setValue(frontValue)
+            self.rearSteering?.setValue(rearValue)
         }
 
-        if let cameraDelegate = self.cameraDelegate {
-            if let pan = cameraDelegate.getPanValue() {
-                self.camPan?.setValue(pan)
-            }
-
-            if let tilt = cameraDelegate.getTiltValue() {
-                self.camTilt?.setValue(tilt)
-            }
+        if let drivetrain = controlDelegate?.getDrivetrainValue() {
+            self.drivetrain?.setValue(drivetrain)
         }
+
+
+        if let pan = cameraDelegate?.getPanValue() {
+            self.camPan?.setValue(pan)
+        }
+
+        if let tilt = cameraDelegate?.getTiltValue() {
+            self.camTilt?.setValue(tilt)
+        }
+
+
+        return RoverData(
+            controls: (drivetrain: drivetrain, frontSteering: frontSteering, rearSteering: rearSteering),
+            camera: (pan: camPan, tilt: camTilt)
+        )
     }
 
     func stopPolling() {
@@ -114,11 +141,39 @@ class Rover {
         let lightBar = Light(color: color)
         client.send(lightBar)
     }
+
+    func changeSteeringMode(to mode: RoverSteeringMode) {
+        switch mode {
+        case .front:
+            steeringMode = .front
+        case .frontAndRear where hasRearSteering == true:
+            steeringMode = .frontAndRear
+        case .rear where hasRearSteering == true:
+            steeringMode = .rear
+        default:
+            print("Invalid steering mode!")
+            break
+        }
+    }
 }
 
 struct RoverData {
-    let controls: (drivetrain: Int, steering: Int)
-    let camera: (pan: Int, tilt: Int)
+    let controls: (drivetrain: Servo?, frontSteering: Servo?, rearSteering: Servo?)
+    let camera: (pan: Servo?, tilt: Servo?)
+
+    func toServoArray() -> [Servo] {
+        return [
+            controls.drivetrain,
+            controls.frontSteering,
+            controls.rearSteering,
+            camera.pan,
+            camera.tilt
+        ].compactMap { $0 }
+    }
+}
+
+enum RoverSteeringMode: CaseIterable {
+    case front, frontAndRear, rear
 }
 
 protocol RoverControlDelegate {
@@ -138,5 +193,5 @@ protocol RoverCameraDelegate {
 }
 
 protocol RoverSubscriber {
-    func receivedLatest(_ roverData: RoverData)
+    func received(_ roverData: RoverData)
 }

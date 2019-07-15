@@ -25,23 +25,28 @@ struct UDPClient {
         connection.cancel()
     }
 
-    static func controlsAndCameraPayload(from roverData: RoverData) -> UDPPayload {
+    static func getServoPayload(from servos: [Servo]) -> UDPPayload {
+        // the MCU currently only supports IDs 1-4 in order for command ID 1
+        let values = (1...4).map { id in
+            servos.first { $0.id == id }?.valueInDegrees ?? 90
+        }
+
         let payload = UDPPayload(
             command: 1,
-            values: [
-                roverData.controls.steering,
-                roverData.controls.drivetrain,
-                roverData.camera.pan,
-                roverData.camera.tilt
-            ]
+            values: values
         )
 
         return payload
     }
 
+    // convenience function to just get the array of non-nil servos
     func send(_ roverData: RoverData) {
+        send(roverData.toServoArray())
+    }
+
+    func send(_ servos: [Servo]) {
         // controls and camera payload
-        let payload = UDPClient.controlsAndCameraPayload(from: roverData)
+        let payload = UDPClient.getServoPayload(from: servos)
 
         send(payload) { error in
             if let error = error {

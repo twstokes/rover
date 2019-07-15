@@ -8,6 +8,7 @@ class Servo {
     private var trim: Float = 0
     private(set) var value: Float = 0
 
+    let id: Int
     let inverted: Bool
 
     var valueInDegrees: Int {
@@ -15,20 +16,27 @@ class Servo {
         return Int(90 * (value + 1)).clampedTo(min: 0, max: 180)
     }
 
-    init(min: Float = -1, max: Float = 1, trim: Float = 0, inverted: Bool = false) {
+    init(id: Int, min: Float = -1, max: Float = 1, trim: Float = 0, inverted: Bool = false) {
         self.allowedRange = Servo.defaultRange.clamped(to: min ... max)
 
         if allowedRange.contains(trim) {
             self.trim = trim
         } else {
-            print("Warning: Trim was set to a value outside of the allowed range.")
+            print("Warning: Trim was set to a value outside of the allowed range. Ignoring value.")
         }
 
         self.inverted = inverted
+        self.id = id
     }
 
     convenience init(with config: ServoConfig) {
-        self.init(min: config.min, max: config.max, trim: config.trim, inverted: config.inverted)
+        self.init(
+            id: config.id,
+            min: config.min,
+            max: config.max,
+            trim: config.trim,
+            inverted: config.inverted
+        )
     }
 
     func setValue(_ value: Float) {
