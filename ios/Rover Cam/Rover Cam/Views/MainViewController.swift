@@ -97,6 +97,19 @@ class MainViewController: UIViewController {
         }
     }
 
+    @IBAction func steeringModeChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            rover?.setSteeringMode(to: .front)
+        case 1:
+            rover?.setSteeringMode(to: .frontAndRear)
+        case 2:
+            rover?.setSteeringMode(to: .rear)
+        default:
+            rover?.setSteeringMode(to: .front)
+        }
+    }
+
     @IBAction func powerToggled(_ toggle: UISwitch) {
         powerOn = toggle.isOn
     }
@@ -120,7 +133,7 @@ extension MainViewController: RoverSubscriber {
         }
 
         if let drivetrain = roverData.controls.drivetrain?.valueInDegrees {
-            self.drivetrain.text = (Int((Float(drivetrain) - 90) / 90 * 100)).description + "%"
+            self.drivetrain.text = (-Int((Float(drivetrain) - 90) / 90 * 100)).description + "%"
         }
 
         if let camPan = roverData.camera.pan?.valueInDegrees {

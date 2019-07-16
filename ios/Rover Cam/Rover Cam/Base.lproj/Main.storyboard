@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14835.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="ipad10_5" orientation="landscape" layout="fullscreen" appearance="light"/>
+    <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14790.5"/>
@@ -13,11 +13,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="Rover_Cam" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="1112" height="834"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gcc-7P-iRw">
-                                <rect key="frame" x="0.0" y="0.0" width="1112" height="684"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="641"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -25,7 +25,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="sYg-hx-Iot" userLabel="Power Stack">
-                                <rect key="frame" x="957.5" y="747" width="104.5" height="31"/>
+                                <rect key="frame" x="869.5" y="689" width="104.5" height="31"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lyt-sb-MoG">
                                         <rect key="frame" x="0.0" y="0.0" width="47.5" height="31"/>
@@ -43,10 +43,10 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9UZ-Wj-a1A" userLabel="Output View">
-                                <rect key="frame" x="0.0" y="684" width="912.5" height="150"/>
+                                <rect key="frame" x="0.0" y="641" width="824.5" height="127"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="PZf-ge-Jsm" userLabel="Light Bar Stack">
-                                        <rect key="frame" x="544" y="61" width="350" height="30"/>
+                                        <rect key="frame" x="456" y="50" width="350" height="30"/>
                                         <subviews>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Nbi-Ec-MFV">
                                                 <rect key="frame" x="-2" y="0.0" width="303" height="31"/>
@@ -67,8 +67,8 @@
                                             <constraint firstAttribute="width" constant="350" id="S8B-wR-BUy"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Suu-TV-xMQ" userLabel="Camera Stack">
-                                        <rect key="frame" x="300" y="36" width="88" height="78"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Suu-TV-xMQ" userLabel="Camera Stack">
+                                        <rect key="frame" x="413" y="20" width="88" height="82"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camera" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LE8-At-9uU">
                                                 <rect key="frame" x="0.0" y="0.0" width="81.5" height="29"/>
@@ -77,7 +77,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="QAk-nW-jpa">
-                                                <rect key="frame" x="0.0" y="37" width="88" height="41"/>
+                                                <rect key="frame" x="0.0" y="41" width="88" height="41"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="l6W-X4-s0V" userLabel="Pan">
                                                         <rect key="frame" x="0.0" y="0.0" width="88" height="20.5"/>
@@ -117,17 +117,11 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="riw-ba-l1y" userLabel="Controls Stack">
-                                        <rect key="frame" x="52" y="36" width="168" height="78"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="riw-ba-l1y" userLabel="Controls Stack">
+                                        <rect key="frame" x="52" y="23" width="281" height="84"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Controls" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zNA-b3-Mr1">
-                                                <rect key="frame" x="0.0" y="0.0" width="88" height="29"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="waO-f1-vck" userLabel="Controls">
-                                                <rect key="frame" x="0.0" y="37" width="168" height="41"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="168" height="41"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="8x0-DO-AEh" userLabel="Steering">
                                                         <rect key="frame" x="0.0" y="0.0" width="168" height="20.5"/>
@@ -165,16 +159,27 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="P45-Lu-nac">
+                                                <rect key="frame" x="0.0" y="53" width="281" height="32"/>
+                                                <segments>
+                                                    <segment title="Front"/>
+                                                    <segment title="Front + Rear"/>
+                                                    <segment title="Rear"/>
+                                                </segments>
+                                                <connections>
+                                                    <action selector="steeringModeChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="8D2-3C-mmz"/>
+                                                </connections>
+                                            </segmentedControl>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="riw-ba-l1y" firstAttribute="leading" secondItem="9UZ-Wj-a1A" secondAttribute="leading" constant="52" id="7t7-S3-9nr"/>
-                                    <constraint firstItem="PZf-ge-Jsm" firstAttribute="top" secondItem="9UZ-Wj-a1A" secondAttribute="top" constant="61" id="dNr-Ly-Muf"/>
-                                    <constraint firstItem="riw-ba-l1y" firstAttribute="top" secondItem="9UZ-Wj-a1A" secondAttribute="top" constant="36" id="jdf-qQ-f4d"/>
+                                    <constraint firstItem="riw-ba-l1y" firstAttribute="centerY" secondItem="PZf-ge-Jsm" secondAttribute="centerY" id="DTd-qT-jqL"/>
+                                    <constraint firstItem="PZf-ge-Jsm" firstAttribute="top" secondItem="9UZ-Wj-a1A" secondAttribute="top" constant="50" id="dNr-Ly-Muf"/>
                                     <constraint firstAttribute="trailing" secondItem="PZf-ge-Jsm" secondAttribute="trailing" constant="18.5" id="kVn-Ah-wDY"/>
-                                    <constraint firstItem="Suu-TV-xMQ" firstAttribute="top" secondItem="9UZ-Wj-a1A" secondAttribute="top" constant="36" id="tgc-aN-o4M"/>
+                                    <constraint firstItem="Suu-TV-xMQ" firstAttribute="top" secondItem="9UZ-Wj-a1A" secondAttribute="top" constant="20" id="tgc-aN-o4M"/>
                                     <constraint firstItem="Suu-TV-xMQ" firstAttribute="leading" secondItem="riw-ba-l1y" secondAttribute="trailing" constant="80" id="z4Q-QB-iau"/>
                                 </constraints>
                             </view>
@@ -191,15 +196,15 @@
                             <constraint firstItem="9UZ-Wj-a1A" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="2pV-tr-sdq"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Gcc-7P-iRw" secondAttribute="trailing" id="BNv-dn-Sid"/>
                             <constraint firstItem="Gcc-7P-iRw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="FcO-GY-jWg"/>
+                            <constraint firstItem="sYg-hx-Iot" firstAttribute="centerY" secondItem="9UZ-Wj-a1A" secondAttribute="centerY" id="GnA-YT-7np"/>
                             <constraint firstItem="9UZ-Wj-a1A" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OQG-fg-J8b"/>
                             <constraint firstItem="sYg-hx-Iot" firstAttribute="leading" secondItem="9UZ-Wj-a1A" secondAttribute="trailing" constant="45" id="R1B-Yw-5aP"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Gcc-7P-iRw" secondAttribute="bottom" constant="150" id="Tgu-rD-uMq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Gcc-7P-iRw" secondAttribute="bottom" constant="127" id="Tgu-rD-uMq"/>
                             <constraint firstItem="1KA-l2-ogY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Y6c-X5-RKH"/>
                             <constraint firstItem="Gcc-7P-iRw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bRr-a3-gY3"/>
                             <constraint firstItem="1KA-l2-ogY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="fRc-cY-JIn"/>
                             <constraint firstItem="9UZ-Wj-a1A" firstAttribute="top" secondItem="Gcc-7P-iRw" secondAttribute="bottom" id="fnJ-x7-dnX"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sYg-hx-Iot" secondAttribute="trailing" constant="50" id="i4C-HT-hO7"/>
-                            <constraint firstItem="sYg-hx-Iot" firstAttribute="top" secondItem="Gcc-7P-iRw" secondAttribute="bottom" constant="63" id="pjY-wI-CU2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

@@ -142,7 +142,7 @@ class Rover {
         client.send(lightBar)
     }
 
-    func changeSteeringMode(to mode: RoverSteeringMode) {
+    func setSteeringMode(to mode: RoverSteeringMode) {
         switch mode {
         case .front:
             steeringMode = .front

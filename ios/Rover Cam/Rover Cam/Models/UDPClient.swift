@@ -48,6 +48,8 @@ struct UDPClient {
         // controls and camera payload
         let payload = UDPClient.getServoPayload(from: servos)
 
+        print(payload)
+
         send(payload) { error in
             if let error = error {
                 print("Error: \(error)")
