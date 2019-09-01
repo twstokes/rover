@@ -34,15 +34,15 @@ processCode Rover::setServo(servoId id, servoVal val)
 {
   // the id can't be less than 1 or greater than number of servos
   if (id < 1 || id > numServos)
-    return BadId;
+    return BAD_ID;
 
   // it's not valid to send higher than 180 to a servo
   if (val > 180)
-    return BadVal;
+    return BAD_VAL;
 
   // write the new value
   servos[id - 1].write(val);
-  return Success;
+  return SUCCESS;
 }
 
 // for setting all servos at once
@@ -53,11 +53,11 @@ processCode Rover::setServos(servoVal *s)
   {
     processCode status = setServo(id, s[id - 1]);
 
-    if (status != Success)
+    if (status != SUCCESS)
       return status;
   }
 
-  return Success;
+  return SUCCESS;
 }
 
 // for setting an individual LED
@@ -65,12 +65,12 @@ processCode Rover::setLight(ledId id, ledColor c)
 {
   // the id can't be less than 1 or greater than the number of lights
   if (id < 1 || id > numLeds)
-    return BadId;
+    return BAD_ID;
 
   // set the pixel color
   strip->setPixelColor(id - 1, c.r, c.g, c.b);
   strip->show();
-  return Success;
+  return SUCCESS;
 }
 
 // for setting all LEDs at once
@@ -83,7 +83,7 @@ processCode Rover::setLights(ledColor c)
   }
 
   strip->show();
-  return Success;
+  return SUCCESS;
 }
 
 String Rover::getServoValues()

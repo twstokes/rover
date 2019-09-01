@@ -38,8 +38,8 @@ void loop()
 
     if (WRITE_RESULT && Serial.availableForWrite() >= sizeof(result))
       Serial.println(result);
-    
-    if (Serial.availableForWrite()) 
+
+    if (Serial.availableForWrite())
       Serial.println(r.getServoValues());
   }
 }
@@ -53,21 +53,21 @@ processCode processPayload(uint8_t *buf)
 
   switch (p.cmd)
   {
-  case SetServo:
+  case SET_SERVO:
     servoData s;
     memcpy(&s, p.data, sizeof(s));
     return r.setServo(s.id, s.val);
-  case SetServos:
+  case SET_SERVOS:
     return r.setServos(p.data);
-  case SetLight:
+  case SET_LIGHT:
     lightData l;
     memcpy(&l, p.data, sizeof(l));
     return r.setLight(l.id, l.color);
-  case SetLights:
+  case SET_LIGHTS:
     ledColor c;
     memcpy(&c, p.data, sizeof(c));
     return r.setLights(c);
   }
 
-  return ReadFailure;
+  return READ_FAILURE;
 }

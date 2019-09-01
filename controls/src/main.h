@@ -15,10 +15,10 @@ struct payload
 
 enum command
 {
-    SetServo,  // setting a servo
-    SetServos, // setting all servos
-    SetLight,  // setting an LEDs
-    SetLights, // setting all the LEDs
+    SET_SERVO,  // setting a servo
+    SET_SERVOS, // setting all servos
+    SET_LIGHT,  // setting an LEDs
+    SET_LIGHTS, // setting all the LEDs
 };
 
 processCode processPayload(uint8_t *);

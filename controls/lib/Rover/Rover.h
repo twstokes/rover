@@ -7,10 +7,10 @@ typedef uint8_t servoId, servoVal, ledId, colorIntensity;
 
 enum processCode
 {
-    Success,     // data read in was valid and written to the servo
-    ReadFailure, // malformed data read in
-    BadId,       // a bad id was referenced
-    BadVal       // a bad value was passed in
+    SUCCESS,      // data read in was valid and written to the servo
+    READ_FAILURE, // malformed data read in
+    BAD_ID,       // a bad id was referenced
+    BAD_VAL       // a bad value was passed in
 };
 
 // used for commanding a single servo
