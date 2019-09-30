@@ -12,16 +12,14 @@ func rawMeasurementHandler(m chan measurement, measuredBeacons measureCollection
 		measurement := <-m
 
 		id := measurement.beacon.id
-		len := len(measuredBeacons[id])
+		startIdx := 0
 
-		// cap measurements at ten values
-		if len >= 10 {
-			len = 9
+		if len(measuredBeacons[id]) >= 10 {
+			// pop the first
+			startIdx = 1
 		}
 
-		// more efficient to just do an array here and shift values, or does Go
-		// handle this well?
-		measuredBeacons[id] = append(measuredBeacons[id][0:len], measurement)
+		measuredBeacons[id] = append(measuredBeacons[id][startIdx:], measurement)
 	}
 }
 
